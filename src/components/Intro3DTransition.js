@@ -124,7 +124,7 @@ export default function Intro3DTransition({ onEnterSite }) {
         setVisibleLines(prev => [...prev, lineToAdd]);
         currentLine++;
         
-        const nextDelay = Math.random() * 150 + 50; 
+        const nextDelay = Math.random() * 400 + 300; 
         timeoutId = setTimeout(printNextLine, nextDelay);
       } else {
         setBootFinished(true);
@@ -147,7 +147,7 @@ export default function Intro3DTransition({ onEnterSite }) {
           const next = p + Math.floor(Math.random() * 10) + 2;
           return next > 100 ? 100 : next;
         });
-      }, 120);
+      }, 300);
     }
     return () => clearInterval(interval);
   }, [fakeProgress]);
