@@ -1,0 +1,341 @@
+@import "tailwindcss";
+
+
+:root,
+[data-theme="cute"] {
+  --background: #fce8ef;
+  --foreground: #8b6070;
+  --card-bg: #fff8f0;
+  --card-border: #f5b4c8;
+  --heading-color: #d4839a;
+  --accent-color: #f0a0b4;
+  --soft-bg: #fce4ec;
+  --dark-accent: #c4728a;
+  --stripe-color: #f8d0dc;
+  --overlay-bg: rgba(252, 232, 239, 0.8);
+  --text-muted: rgba(212, 131, 154, 0.5);
+  --glow-shadow: 0 4px 20px rgba(245, 180, 200, 0.25);
+  --hover-border: #e890a8;
+  --selection-bg: #f5b4c8;
+  --selection-color: white;
+  --body-bg-image:
+    repeating-linear-gradient(0deg,
+      transparent,
+      transparent 25px,
+      rgba(245, 180, 200, 0.3) 25px,
+      rgba(245, 180, 200, 0.3) 50px),
+    repeating-linear-gradient(90deg,
+      transparent,
+      transparent 25px,
+      rgba(245, 180, 200, 0.3) 25px,
+      rgba(245, 180, 200, 0.3) 50px);
+  --cursor-default: url('https://cdn.cursors-4u.net/previews/hetalia-mochi-rome-fa80e0bb-32.webp') 16 16, auto;
+  --cursor-pointer: url('https://cdn.cursors-4u.net/previews/hetalia-mochi-rome-fa80e0bb-32.webp') 16 16, pointer;
+}
+
+
+[data-theme="goth"] {
+  --background: #0a0a0a;
+  --foreground: #c0c0c0;
+  --card-bg: #111111;
+  --card-border: #333333;
+  --heading-color: #e0e0e0;
+  --accent-color: #666666;
+  --soft-bg: #1a1a1a;
+  --dark-accent: #999999;
+  --stripe-color: #1c1c1c;
+  --overlay-bg: rgba(10, 10, 10, 0.85);
+  --text-muted: rgba(180, 180, 180, 0.4);
+  --glow-shadow: 0 0 20px rgba(255, 255, 255, 0.06);
+  --hover-border: #555555;
+  --selection-bg: #333333;
+  --selection-color: #e0e0e0;
+  --body-bg-image: none;
+  --cursor-default: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 3L11 20L14 14L20 11L5 3Z" fill="%23ff1a1a" stroke="black" stroke-width="1.5" stroke-linejoin="round"/></svg>') 5 3, auto;
+  --cursor-pointer: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2v6m0 8v6m-8-10h6m8 0h6" stroke="%23ff1a1a" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="3" fill="%23ff1a1a"/></svg>') 12 12, pointer;
+}
+
+
+[data-theme="glass"] {
+  --background: #0d1117;
+  --foreground: #e6edf3;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --heading-color: #ffffff;
+  --accent-color: rgba(136, 192, 255, 0.6);
+  --soft-bg: rgba(255, 255, 255, 0.03);
+  --dark-accent: #88c0ff;
+  --stripe-color: rgba(255, 255, 255, 0.03);
+  --overlay-bg: rgba(13, 17, 23, 0.85);
+  --text-muted: rgba(230, 237, 243, 0.4);
+  --glow-shadow: 0 0 20px rgba(136, 192, 255, 0.15);
+  --hover-border: rgba(136, 192, 255, 0.3);
+  --selection-bg: rgba(136, 192, 255, 0.3);
+  --selection-color: #ffffff;
+  --body-bg-image: none;
+  --cursor-default: default;
+  --cursor-pointer: pointer;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-quicksand);
+}
+
+html,
+body {
+  overflow-x: clip;
+  max-width: 100vw;
+}
+
+body {
+  background-color: var(--background);
+  background-image: var(--body-bg-image);
+  color: var(--foreground);
+  font-family: var(--font-quicksand), 'Quicksand', sans-serif;
+  transition: background-color 0.6s ease, color 0.4s ease;
+  cursor: var(--cursor-default);
+  overflow-x: clip;
+  max-width: 100vw;
+}
+
+
+[data-theme="glass"] body {
+  font-family: var(--font-outfit), 'Outfit', sans-serif;
+}
+
+a,
+button,
+[role="button"],
+.cursor-pointer {
+  cursor: var(--cursor-pointer) !important;
+}
+
+
+[data-theme="goth"] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 45%, rgba(255, 255, 255, 0.3) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 40% 15%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 70%, rgba(255, 255, 255, 0.25) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 70% 35%, rgba(255, 255, 255, 0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 60%, rgba(255, 255, 255, 0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 80%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 60% 90%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 10%, rgba(255, 255, 255, 0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 55%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 75% 85%, rgba(255, 255, 255, 0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+  animation: sparkle-drift 8s ease-in-out infinite alternate;
+}
+
+
+[data-theme="goth"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    url('data:image/svg+xml;utf8,<svg width="40" height="60" viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="12" width="20" height="36" rx="10" fill="none" stroke="%23333" stroke-width="4"/><rect x="17" y="-18" width="6" height="36" rx="3" fill="none" stroke="%23111" stroke-width="4"/><rect x="17" y="42" width="6" height="36" rx="3" fill="none" stroke="%23111" stroke-width="4"/></svg>'),
+    url('data:image/svg+xml;utf8,<svg width="40" height="60" viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="12" width="20" height="36" rx="10" fill="none" stroke="%23333" stroke-width="4"/><rect x="17" y="-18" width="6" height="36" rx="3" fill="none" stroke="%23111" stroke-width="4"/><rect x="17" y="42" width="6" height="36" rx="3" fill="none" stroke="%23111" stroke-width="4"/></svg>');
+  background-repeat: repeat-y, repeat-y;
+  background-position: 5vw 0, 95vw 0;
+  opacity: 0.8;
+}
+
+
+[data-theme="glass"] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(56, 89, 160, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(88, 40, 130, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(30, 120, 130, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 60%, rgba(136, 192, 255, 0.08) 0%, transparent 40%);
+  animation: glass-mesh-drift 12s ease-in-out infinite alternate;
+}
+
+[data-theme="glass"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+
+.goth-title-hover {
+  transition: all 0.5s ease;
+}
+
+.goth-title-hover:hover {
+  color: #ff1a1a !important;
+  -webkit-text-stroke: 2px #800000 !important;
+  text-shadow: 0 0 20px rgba(255, 0, 0, 0.8), 0 0 40px rgba(200, 0, 0, 0.6), 0 0 60px rgba(139, 0, 0, 0.8) !important;
+  filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.5)) !important;
+  transform: none !important;
+}
+
+
+@keyframes stripe-slide {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 40px 0;
+  }
+}
+
+.candy-stripe {
+  background-image: repeating-linear-gradient(45deg,
+      #f5b4c8,
+      #f5b4c8 10px,
+      #fce4ec 10px,
+      #fce4ec 20px);
+  background-size: 40px 40px;
+  animation: stripe-slide 1s linear infinite;
+}
+
+
+@keyframes blood-pulse {
+  0% {
+    filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.3));
+    transform: scale(1);
+  }
+
+  50% {
+    filter: drop-shadow(0 0 30px rgba(255, 0, 0, 0.8));
+    transform: scale(1.03);
+  }
+
+  100% {
+    filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.3));
+    transform: scale(1);
+  }
+}
+
+.blood-pulse {
+  animation: blood-pulse 2.5s infinite ease-in-out;
+}
+
+@keyframes sparkle-drift {
+  0% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes glass-mesh-drift {
+  0% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0.8;
+  }
+
+  33% {
+    transform: scale(1.05) translate(-1%, 1%);
+    opacity: 1;
+  }
+
+  66% {
+    transform: scale(1.02) translate(1%, -1%);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0.85;
+  }
+}
+
+@keyframes glass-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  border-left: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateZ(0);
+
+  transition: all 0.4s ease;
+}
+
+.glass-card:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03));
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25), 0 0 24px rgba(255, 255, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+
+[data-theme="glass"] .glass-scroll::-webkit-scrollbar {
+  display: block;
+  width: 4px;
+}
+
+[data-theme="glass"] .glass-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[data-theme="glass"] .glass-scroll::-webkit-scrollbar-thumb {
+  background: rgba(136, 192, 255, 0.2);
+  border-radius: 2px;
+}
+
+@layer utilities {
+  .animate-spin-slow {
+    animation: spin 8s linear infinite;
+  }
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+::selection {
+  background-color: var(--selection-bg);
+  color: var(--selection-color);
+}
+
+
+
+
+[data-theme="goth"] .transition-theme,
+[data-theme="cute"] .transition-theme {
+  transition: background-color 0.5s ease, border-color 0.5s ease, color 0.4s ease, box-shadow 0.5s ease;
+}
