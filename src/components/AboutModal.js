@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Cpu, Palette, Terminal } from 'lucide-react';
 import { FaJava } from 'react-icons/fa';
@@ -63,6 +63,45 @@ const TECH_SKILLS = [
   { name: "Vue.js", icon: SiVuedotjs, level: 50 },
 ];
 
+const ScrambleText = ({ text }) => {
+  const [displayText, setDisplayText] = useState('');
+  
+  useEffect(() => {
+    let iteration = 0;
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+';
+    let interval = null;
+    
+    const timeout = setTimeout(() => {
+      interval = setInterval(() => {
+        setDisplayText(
+          text.split('')
+            .map((char, index) => {
+              if (index < iteration) {
+                return text[index];
+              }
+              if (char === ' ') return ' ';
+              return chars[Math.floor(Math.random() * chars.length)];
+            })
+            .join('')
+        );
+
+        if (iteration >= text.length) {
+          clearInterval(interval);
+        }
+
+        iteration += 1 / 3;
+      }, 30);
+    }, 400);
+
+    return () => {
+      clearTimeout(timeout);
+      if (interval) clearInterval(interval);
+    };
+  }, [text]);
+
+  return <>{displayText}</>;
+};
+
 export default function AboutModal({ onClose }) {
   const [activeTab, setActiveTab] = useState('software');
   const currentSkills = activeTab === 'software' ? SOFTWARE_SKILLS : TECH_SKILLS;
@@ -73,9 +112,35 @@ export default function AboutModal({ onClose }) {
       <div className="absolute inset-0" onClick={onClose} />
 
       <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.95, opacity: 0 }}
+        initial={{ opacity: 0, x: -20, clipPath: 'polygon(0 10%, 100% 10%, 100% 30%, 0 30%)' }}
+        animate={{ 
+          opacity: [0.8, 1, 0, 1, 0.5, 1],
+          x: [-20, 20, -10, 10, -5, 0],
+          y: [10, -10, 5, -5, 2, 0],
+          clipPath: [
+            'polygon(0 10%, 100% 10%, 100% 30%, 0 30%)',
+            'polygon(0 50%, 100% 50%, 100% 70%, 0 70%)',
+            'polygon(0 20%, 100% 20%, 100% 40%, 0 40%)',
+            'polygon(0 80%, 100% 80%, 100% 90%, 0 90%)',
+            'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+            'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
+          ],
+          filter: [
+            'hue-rotate(90deg) contrast(200%)', 
+            'hue-rotate(-90deg) invert(100%)', 
+            'hue-rotate(45deg)', 
+            'invert(100%)', 
+            'none', 
+            'none'
+          ]
+        }}
+        transition={{ duration: 0.4, times: [0, 0.15, 0.3, 0.45, 0.7, 1], ease: "linear" }}
+        exit={{ 
+          scale: 0.95, 
+          opacity: 0,
+          filter: 'invert(100%)',
+          transition: { duration: 0.2 }
+        }}
         className="relative w-full max-w-5xl bg-[#050505] border border-[#ff1a1a] flex flex-col md:flex-row max-h-[90vh] overflow-hidden"
       >
         <button
@@ -104,14 +169,14 @@ export default function AboutModal({ onClose }) {
               className="text-4xl md:text-5xl tracking-tighter text-[#e0e0e0] mb-2" 
               style={{ fontFamily: 'var(--font-unifraktur), serif', textShadow: '0 4px 10px rgba(0,0,0,0.8)' }}
             >
-              GunneR
+              <ScrambleText text="GunneR" />
             </h2>
             <div className="w-12 h-1 bg-[#ff1a1a] mb-4"></div>
-            <p className="text-xs font-mono uppercase tracking-widest mb-4 text-[#ff1a1a]">Daniel Angelou Alorro</p>
+            <p className="text-xs font-mono uppercase tracking-widest mb-4 text-[#ff1a1a]"><ScrambleText text="Daniel Angelou Alorro" /></p>
             <p className="text-sm font-mono leading-relaxed text-[#888]">
-              Multidisciplinary creative based in Davao. Bridging the gap between design, code, and sound to create immersive digital experiences.
+              <ScrambleText text="Multidisciplinary creative based in Davao. Bridging the gap between design, code, and sound to create immersive digital experiences." />
               <br /><br />
-              SYS.BUILD // BRANDS _ APPS _ BEATS
+              <ScrambleText text="SYS.BUILD // BRANDS _ APPS _ BEATS" />
             </p>
           </div>
         </div>
@@ -120,14 +185,14 @@ export default function AboutModal({ onClose }) {
 
           <div className="mb-12">
             <h3 className="text-sm font-mono font-bold text-[#e0e0e0] mb-6 border-b border-[#333] pb-3 flex items-center gap-3 uppercase tracking-widest">
-              <Terminal size={16} className="text-[#ff1a1a]" /> Core Capabilities
+              <Terminal size={16} className="text-[#ff1a1a]" /> <ScrambleText text="Core Capabilities" />
             </h3>
             <div className="space-y-6">
               {MAIN_SKILLS.map((skill, i) => (
                 <div key={skill.name}>
                   <div className="flex justify-between text-xs font-mono font-medium text-[#888] mb-2 uppercase">
-                    <span>{skill.name}</span>
-                    <span className="text-[#ff1a1a]">{skill.level}%</span>
+                    <span><ScrambleText text={skill.name} /></span>
+                    <span className="text-[#ff1a1a]"><ScrambleText text={`${skill.level}%`} /></span>
                   </div>
                   <div className="h-1.5 w-full bg-[#111] overflow-hidden border border-[#222]">
                     <motion.div
@@ -144,20 +209,20 @@ export default function AboutModal({ onClose }) {
 
           <div>
             <div className="flex items-center justify-between mb-8 border-b border-[#333] pb-3">
-              <h3 className="text-sm font-mono font-bold text-[#e0e0e0] uppercase tracking-widest">Efficiency</h3>
+              <h3 className="text-sm font-mono font-bold text-[#e0e0e0] uppercase tracking-widest"><ScrambleText text="Efficiency" /></h3>
 
               <div className="flex gap-2">
                 <button
                   onClick={() => setActiveTab('software')}
                   className={`flex items-center gap-2 px-4 py-2 text-xs font-mono font-bold uppercase transition-colors border ${activeTab === 'software' ? 'bg-[#ff1a1a] text-[#000] border-[#ff1a1a]' : 'bg-[#111] text-[#666] border-[#222] hover:text-[#fff]'}`}
                 >
-                  <Palette size={14} /> Software
+                  <Palette size={14} /> <ScrambleText text="Software" />
                 </button>
                 <button
                   onClick={() => setActiveTab('tech')}
                   className={`flex items-center gap-2 px-4 py-2 text-xs font-mono font-bold uppercase transition-colors border ${activeTab === 'tech' ? 'bg-[#ff1a1a] text-[#000] border-[#ff1a1a]' : 'bg-[#111] text-[#666] border-[#222] hover:text-[#fff]'}`}
                 >
-                  <Cpu size={14} /> Stack
+                  <Cpu size={14} /> <ScrambleText text="Stack" />
                 </button>
               </div>
             </div>
@@ -178,8 +243,8 @@ export default function AboutModal({ onClose }) {
                     </div>
                     <div className="flex-1">
                       <div className="flex justify-between text-xs font-mono text-[#888] mb-1.5 uppercase">
-                        <span>{sw.name}</span>
-                        <span className="text-[#e0e0e0]">{sw.level}%</span>
+                        <span><ScrambleText text={sw.name} /></span>
+                        <span className="text-[#e0e0e0]"><ScrambleText text={`${sw.level}%`} /></span>
                       </div>
                       <div className="h-1 w-full bg-[#222] overflow-hidden">
                         <motion.div
