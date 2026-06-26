@@ -249,15 +249,23 @@ export default function PortfolioContent({ graphics, videos, music, apps }) {
 
           <div className={`absolute inset-0 ${c.heroOverlay} pointer-events-none`} />
 
-          <div className="absolute inset-0 pointer-events-none opacity-20 flex items-center justify-center">
-            <div className="text-left font-mono text-xs tracking-widest text-[#ff1a1a] opacity-40 whitespace-pre absolute top-10 left-10">
-              SYS_INIT // SUCCESS<br/>
-              LOAD_MODULES // OK<br/>
-              AWAITING_COMMAND<span className="animate-pulse">_</span>
+          {/* 3D VHS Ambient Text with Static Glitch Effect */}
+          <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-20 overflow-hidden">
+            {/* Top Left Text with Fisheye Distortion */}
+            <div className="absolute top-10 left-10" style={{ transform: 'perspective(300px) rotateX(15deg) rotateY(15deg)', transformOrigin: 'top left' }}>
+              <div className="font-mono text-sm tracking-widest text-[#e0e0e0] mix-blend-screen opacity-80 whitespace-pre vhs-text-glitch" style={{ textShadow: '2px 0 1px rgba(255,0,0,0.8), -2px 0 1px rgba(0,255,255,0.8)' }}>
+                SYS_INIT // SUCCESS<br/>
+                LOAD_MODULES // OK<br/>
+                AWAITING_COMMAND<span className="animate-pulse">_</span>
+              </div>
             </div>
-            <div className="text-right font-mono text-xs tracking-widest text-[#333] whitespace-pre absolute bottom-10 right-10">
-              0x000000 // CORE<br/>
-              MEM: ALLOCATED
+            
+            {/* Bottom Right Text with Fisheye Distortion */}
+            <div className="absolute bottom-10 right-10" style={{ transform: 'perspective(300px) rotateX(-15deg) rotateY(-15deg)', transformOrigin: 'bottom right' }}>
+              <div className="text-right font-mono text-sm tracking-widest text-[#e0e0e0] mix-blend-screen opacity-80 whitespace-pre vhs-text-glitch-alt" style={{ textShadow: '2px 0 1px rgba(255,0,0,0.8), -2px 0 1px rgba(0,255,255,0.8)' }}>
+                0x000000 // CORE<br/>
+                MEM: ALLOCATED
+              </div>
             </div>
           </div>
 
@@ -329,7 +337,7 @@ export default function PortfolioContent({ graphics, videos, music, apps }) {
         </nav>
 
         <div className="max-w-7xl mx-auto px-4 pb-12">
-          <div className={`${c.cardBg} rounded-none border ${c.cardBorder} overflow-hidden`}>
+          <div className={`${c.cardBg} crt-monitor border ${c.cardBorder} overflow-hidden`}>
 
             <div className="h-8 flex items-center px-4 bg-[#0a0a0a] border-b border-[#222]">
               <div className="font-mono text-[10px] text-[#ff1a1a] tracking-widest uppercase opacity-70">

@@ -67,6 +67,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} ${quicksand.variable} ${rubikSpray.variable} ${cinzel.variable} ${unifraktur.variable} ${pottaOne.variable} ${outfit.variable} ${electrolize.variable} antialiased overflow-x-clip w-full`}
       >
         {children}
+        <div className="vhs-overlay pointer-events-none"></div>
       </body>
     </html>
   );
