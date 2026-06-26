@@ -55,7 +55,7 @@ export default function AnimeBackground() {
             ...orbBaseStyles[i],
             minWidth: '300px',
             minHeight: '300px',
-            filter: 'blur(60px)',
+            filter: 'blur(100px)',
             mixBlendMode: isGoth ? 'normal' : 'multiply',
           }}
         />

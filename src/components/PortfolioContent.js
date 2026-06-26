@@ -189,7 +189,7 @@ export default function PortfolioContent({ graphics, videos, music, apps }) {
   };
 
   const c = {
-    heroOverlay: 'bg-[#000]/60',
+    heroOverlay: 'bg-gradient-to-b from-transparent via-[#000]/60 to-[#000]',
     titleColor: 'text-[#e0e0e0]',
     navBg: 'bg-[#0a0a0a]',
     navBorder: 'border-[#333]',
