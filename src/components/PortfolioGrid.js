@@ -5,33 +5,13 @@ import { createPortal } from 'react-dom';
 import { X, ExternalLink, Github } from 'lucide-react';
 import ImageMagnifier from './ImageMagnifier';
 
-import anime from 'animejs';
+import { motion } from 'framer-motion';
 
 export default function PortfolioGrid({ items, isApp = false }) {
   const [selectedItem, setSelectedItem] = useState(null);
   const gridRef = useRef(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        anime({
-          targets: gridRef.current.querySelectorAll('.portfolio-card'),
-          translateY: [50, 0],
-          opacity: [0, 1],
-          easing: 'easeOutExpo',
-          duration: 800,
-          delay: anime.stagger(150)
-        });
-        observer.disconnect();
-      }
-    }, { threshold: 0.1 });
 
-    if (gridRef.current) {
-      observer.observe(gridRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [items]);
 
   useEffect(() => {
     if (selectedItem) {
@@ -51,27 +31,16 @@ export default function PortfolioGrid({ items, isApp = false }) {
   return (
     <>
       <div ref={gridRef} className={`grid grid-cols-1 gap-6 ${isApp ? 'md:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
-        {items.map((item) => (
-          <div
+        {items.map((item, index) => (
+          <motion.div
             key={item._id}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, delay: index * 0.15, ease: "easeOut" }}
+            whileHover={{ scale: 1.02 }}
             onClick={() => setSelectedItem(item)}
-            onMouseEnter={(e) => {
-              anime({
-                targets: e.currentTarget,
-                scale: 1.02,
-                duration: 400,
-                easing: 'easeOutExpo'
-              });
-            }}
-            onMouseLeave={(e) => {
-              anime({
-                targets: e.currentTarget,
-                scale: 1,
-                duration: 400,
-                easing: 'easeOutExpo'
-              });
-            }}
-            className="portfolio-card opacity-0 group relative cursor-pointer rounded-none overflow-hidden bg-[#050505] border-2 border-[#222] hover:border-[#ff1a1a] transition-colors duration-300"
+            className="portfolio-card group relative cursor-pointer rounded-none overflow-hidden bg-[#050505] border-2 border-[#222] hover:border-[#ff1a1a] transition-colors duration-300"
           >
             <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-[#ff1a1a] opacity-0 group-hover:opacity-100 transition-opacity z-20" />
             <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-[#ff1a1a] opacity-0 group-hover:opacity-100 transition-opacity z-20" />
@@ -96,7 +65,7 @@ export default function PortfolioGrid({ items, isApp = false }) {
                 [ OPEN_DETAILS_VIEW ]
               </p>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 

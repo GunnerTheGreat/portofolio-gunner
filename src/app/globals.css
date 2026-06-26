@@ -316,6 +316,27 @@ button,
   .animate-spin-slow {
     animation: spin 8s linear infinite;
   }
+  .rigid-slider {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .rigid-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 6px;
+    height: 12px;
+    background: currentColor;
+    cursor: pointer;
+    border-radius: 0;
+  }
+  .rigid-slider::-moz-range-thumb {
+    width: 6px;
+    height: 12px;
+    background: currentColor;
+    cursor: pointer;
+    border-radius: 0;
+    border: none;
+  }
 }
 
 *::-webkit-scrollbar {

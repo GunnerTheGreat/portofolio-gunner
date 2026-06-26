@@ -25,7 +25,7 @@ export default function AnimeBackground() {
       direction: 'alternate',
       loop: true,
     });
-  }, [theme]); // Restart/adjust if theme changes
+  }, [theme]);
 
 
   const orbColors = isGlass 

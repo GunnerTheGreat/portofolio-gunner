@@ -48,7 +48,7 @@ export default function ConsoleModal({ onClose, onAbout }) {
         onClose();
         onAbout();
       }, 500);
-      return; // Exit early to prevent state update conflict
+      return;
     } else if (cmd === '/clear') {
       setLogs([{ type: 'system', text: 'G-SEC TERMINAL v9.4.1 [RESTRICTED ACCESS]' }]);
       setInput('');

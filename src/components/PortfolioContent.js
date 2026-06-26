@@ -50,8 +50,8 @@ export default function PortfolioContent({ graphics, videos, music, apps }) {
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
-            ease: 'power3.out',
+            duration: 1.2,
+            ease: 'power2.out',
             scrollTrigger: {
               trigger: section,
               start: 'top 85%',
@@ -61,28 +61,34 @@ export default function PortfolioContent({ graphics, videos, music, apps }) {
         );
       });
 
-      gsap.to(['.gsap-letter', '.gsap-hero-content > div'], {
-        y: (index) => -100 - (index * 40),
-        opacity: 0, 
-        stagger: 0.04, 
-        scrollTrigger: {
-          trigger: '#hero-section',
-          start: 'top top',
-          end: 'bottom 10%', 
-          scrub: 2, 
+      gsap.fromTo(['.gsap-letter', '.gsap-hero-content > div'], 
+        { opacity: 1, y: 0 },
+        {
+          y: (index) => -100 - (index * 40),
+          opacity: 0, 
+          stagger: 0.04, 
+          scrollTrigger: {
+            trigger: '#hero-section',
+            start: 'top top',
+            end: 'bottom 10%', 
+            scrub: 2, 
+          }
         }
-      });
+      );
 
-      gsap.to('.gsap-hero-btn', {
-        y: 100,
-        opacity: 0,
-        scrollTrigger: {
-          trigger: '#hero-section',
-          start: 'top top',
-          end: 'bottom 10%',
-          scrub: 2,
+      gsap.fromTo('.gsap-hero-btn', 
+        { opacity: 1, y: 0 },
+        {
+          y: 100,
+          opacity: 0,
+          scrollTrigger: {
+            trigger: '#hero-section',
+            start: 'top top',
+            end: 'bottom 10%',
+            scrub: 2,
+          }
         }
-      });
+      );
     });
 
     mm.add("(prefers-reduced-motion: reduce)", () => {
@@ -114,8 +120,8 @@ export default function PortfolioContent({ graphics, videos, music, apps }) {
           translateY: [-50, 0],
           opacity: [0, 1],
           scale: [0.8, 1],
-          easing: 'easeOutElastic(1, .6)',
-          duration: 1500,
+          easing: 'easeOutExpo',
+          duration: 1200,
           delay: anime.stagger(150, { start: 200 })
         });
       } else {
@@ -276,6 +282,7 @@ export default function PortfolioContent({ graphics, videos, music, apps }) {
                         targets: e.target,
                         translateY: [-15, 0],
                         scale: [1.15, 1],
+                        opacity: 1,
                         easing: 'easeOutExpo',
                         duration: 600
                       });

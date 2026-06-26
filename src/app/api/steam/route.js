@@ -13,7 +13,7 @@ export async function GET() {
   try {
     const summaryRes = await fetch(
       `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${STEAM_API_KEY}&steamids=${STEAM_ID}`,
-      { next: { revalidate: 60 } } // Cache for 60 seconds
+      { next: { revalidate: 60 } }
     );
     const summaryData = await summaryRes.json();
     const player = summaryData?.response?.players?.[0];
@@ -34,12 +34,12 @@ export async function GET() {
 
     if (player.personastate > 0) {
       statusText = 'Online';
-      statusColor = 'blue'; // Steam blue
+      statusColor = 'blue';
     }
     
     if (player.gameextrainfo) {
       statusText = 'In-Game';
-      statusColor = 'green'; // Steam green
+      statusColor = 'green';
     }
 
     return NextResponse.json({
@@ -51,7 +51,7 @@ export async function GET() {
         currentGame: player.gameextrainfo || null,
         profileUrl: player.profileurl
       },
-      recentGames: recentGames.slice(0, 3) // Return top 3 recent games
+      recentGames: recentGames.slice(0, 3)
     });
 
   } catch (error) {

@@ -42,7 +42,7 @@ const LoadingScene = () => {
       <pointLight position={[0, 0, 0]} color="#ff1a1a" intensity={8} distance={30} />
       <pointLight position={[5, 5, 5]} color="#4a0000" intensity={3} />
 
-      {Array.from({ length: 40 }).map((_, i) => (
+      {Array.from({ length: 20 }).map((_, i) => (
         <Float
           key={i}
           speed={1.5}
@@ -65,7 +65,7 @@ const LoadingScene = () => {
           </mesh>
         </Float>
       ))}
-      <Stars radius={50} depth={20} count={1500} factor={3} saturation={0} fade speed={1.5} />
+      <Stars radius={50} depth={20} count={800} factor={3} saturation={0} fade speed={1.5} />
     </group>
   );
 };
@@ -77,7 +77,7 @@ const CameraController = ({ isTransitioning, onTransitionComplete }) => {
 
   useFrame((state, delta) => {
     if (isTransitioning) {
-      speed.current = THREE.MathUtils.lerp(speed.current, 60, 0.05);
+      speed.current = THREE.MathUtils.lerp(speed.current, 35, 0.02);
       camera.position.z -= speed.current * delta;
       
       if (camera.position.z < -40) {
