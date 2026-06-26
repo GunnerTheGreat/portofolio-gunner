@@ -10,6 +10,83 @@ const ASCII_ART = `
  \\____|\\___/|_| \\_|_| \\_|_____|_| \\_\\
 `;
 
+const DEDSEC_FRAMES = [
+`       ______
+    .-"      "-.
+   /            \\
+  |              |
+  |,  .-.  .-.  ,|
+  | )(__/  \\__)( |
+  |/     /\\     \\|
+  (_     ^^     _)
+   \\__|IIIIII|__/
+    | \\IIIIII/ |
+    \\          /
+     \`--------\``,
+`       ______
+    .-"      "-.
+   /            \\
+  |              |
+  |,  .-.  .-.  ,|
+  | )(__/  \\__)( |
+  |/     /\\     \\|
+  (_     ^^     _)
+   \\__        __/
+    | |IIIIII| |
+    \\          /
+     \`--------\``,
+`         ______
+      .-"      "-.
+     /            \\
+    |              |
+    |,  .-.  .-.  ,|
+    | )(__/  \\__)( |
+    |/     /\\     \\|
+    (_     ^^     _)
+     \\__|IIIIII|__/
+      | \\IIIIII/ |
+      \\          /
+       \`--------\``,
+`  | )(__/  \\__)( |
+       ______
+    .-"      "-.
+  |/     /\\     \\|
+   \\__|IIIIII|__/
+  |              |
+   /            \\
+  |,  .-.  .-.  ,|
+  (_     ^^     _)
+    | \\IIIIII/ |
+     \`--------\`
+    \\          /`
+];
+
+const DedsecAnimation = () => {
+  const [frameIndex, setFrameIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (Math.random() > 0.85) {
+        const randomFrame = Math.floor(Math.random() * (DEDSEC_FRAMES.length - 1)) + 1;
+        setFrameIndex(randomFrame);
+        setTimeout(() => setFrameIndex(0), 120);
+      } else {
+        setFrameIndex(0);
+      }
+    }, 200);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <pre 
+      className="text-[6px] md:text-[8px] text-[#ff1a1a] opacity-20 font-mono leading-tight pointer-events-none select-none" 
+      style={{ textShadow: '2px 0 0 rgba(255,0,0,0.6), -2px 0 0 rgba(0,255,255,0.6)' }}
+    >
+      {DEDSEC_FRAMES[frameIndex]}
+    </pre>
+  );
+};
+
 export default function ConsoleModal({ onClose, onAbout }) {
   const [logs, setLogs] = useState([
     { type: 'system', text: 'G-SEC TERMINAL v9.4.1 [RESTRICTED ACCESS]' },
@@ -88,43 +165,51 @@ export default function ConsoleModal({ onClose, onAbout }) {
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 md:p-6 font-mono text-sm md:text-base">
-          {logs.map((log, idx) => {
-            if (log.type === 'ascii') {
+        <div className="flex-1 overflow-y-auto p-4 md:p-6 font-mono text-sm md:text-base relative">
+          
+          {/* Futuristic Ambient ASCII Shader */}
+          <div className="absolute right-4 bottom-4 md:right-8 md:bottom-8 pointer-events-none flex flex-col items-end z-0">
+             <DedsecAnimation />
+          </div>
+
+          <div className="relative z-10">
+            {logs.map((log, idx) => {
+              if (log.type === 'ascii') {
+                return (
+                  <pre key={idx} className="text-[10px] md:text-sm leading-tight text-[#ff1a1a] font-bold overflow-x-auto my-4">
+                    {log.text}
+                  </pre>
+                );
+              }
+              if (log.type === 'warning') {
+                return (
+                  <div key={idx} className="text-yellow-500 animate-pulse my-2 font-bold uppercase">
+                    {log.text}
+                  </div>
+                );
+              }
+              if (log.type === 'error') {
+                return (
+                  <div key={idx} className="text-[#ff1a1a] my-1">
+                    {log.text}
+                  </div>
+                );
+              }
+              if (log.type === 'user') {
+                return (
+                  <div key={idx} className="text-[#e0e0e0] my-1">
+                    {log.text}
+                  </div>
+                );
+              }
               return (
-                <pre key={idx} className="text-[10px] md:text-sm leading-tight text-[#ff1a1a] font-bold overflow-x-auto my-4">
-                  {log.text}
-                </pre>
-              );
-            }
-            if (log.type === 'warning') {
-              return (
-                <div key={idx} className="text-yellow-500 animate-pulse my-2 font-bold uppercase">
+                <div key={idx} className="text-[#888] my-1 whitespace-pre-wrap">
                   {log.text}
                 </div>
               );
-            }
-            if (log.type === 'error') {
-              return (
-                <div key={idx} className="text-[#ff1a1a] my-1">
-                  {log.text}
-                </div>
-              );
-            }
-            if (log.type === 'user') {
-              return (
-                <div key={idx} className="text-[#e0e0e0] my-1">
-                  {log.text}
-                </div>
-              );
-            }
-            return (
-              <div key={idx} className="text-[#888] my-1 whitespace-pre-wrap">
-                {log.text}
-              </div>
-            );
-          })}
-          <div ref={logsEndRef} />
+            })}
+            <div ref={logsEndRef} />
+          </div>
         </div>
 
         <div className="p-4 border-t border-[#333] bg-[#0a0a0a]">
