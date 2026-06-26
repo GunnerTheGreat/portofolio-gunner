@@ -134,9 +134,25 @@ export default function LiveStatus() {
         ) : activity ? (
 
           <div className="flex items-center gap-3">
-            <div className={`flex items-center justify-center shrink-0 w-12 h-12 rounded-md border-2 ${c.border} ${isGlass ? '' : isGoth ? 'bg-[#0a0a0a]' : 'bg-[#fce8ef]'}`} style={glassIconBgStyle}>
-              <Gamepad2 size={24} className={c.icon} />
-            </div>
+            {activity.assets && activity.assets.large_image && activity.application_id ? (
+              <div className="relative shrink-0 w-12 h-12 rounded-md overflow-hidden shadow-md">
+                <img 
+                  src={activity.assets.large_image.startsWith('mp:external/') 
+                    ? `https://media.discordapp.net/external/${activity.assets.large_image.replace('mp:external/', '')}`
+                    : `https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.large_image}.png?size=128`}
+                  alt={activity.name} 
+                  className="w-full h-full object-cover"
+                  onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+                />
+                <div className="hidden items-center justify-center w-full h-full border-2 border-[#333] bg-[#0a0a0a]">
+                  <Gamepad2 size={24} className={c.icon} />
+                </div>
+              </div>
+            ) : (
+              <div className={`flex items-center justify-center shrink-0 w-12 h-12 rounded-md border-2 ${c.border} ${isGoth ? 'bg-[#0a0a0a]' : 'bg-[#111]'}`}>
+                <Gamepad2 size={24} className={c.icon} />
+              </div>
+            )}
             <div className="flex flex-col overflow-hidden">
               <div className="flex items-center gap-1.5">
                 <Activity size={12} className={c.icon} />
