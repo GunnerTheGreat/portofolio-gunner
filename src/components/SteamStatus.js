@@ -16,7 +16,7 @@ export default function SteamStatus() {
   useEffect(() => {
     async function fetchSteam() {
       try {
-        const res = await fetch('/api/steam');
+        const res = await fetch(`/api/steam?t=${Date.now()}`);
         const json = await res.json();
         if (res.ok) {
           setData(json);
@@ -91,18 +91,37 @@ export default function SteamStatus() {
   if (profile.statusColor === 'green') statusClasses = 'border-green-400 bg-green-400';
 
   return (
-    <div className={`flex flex-col gap-3 p-4 rounded-xl border-2 ${c.border} ${c.bg} transition-colors duration-500 w-full overflow-hidden`} style={glassStyle}>
+    <div className={`relative flex flex-col gap-4 p-4 rounded-xl border-2 ${c.border} ${c.bg} transition-colors duration-500 w-full overflow-hidden`} style={glassStyle}>
 
-
-      <a href={profile.profileUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group hover:opacity-80 transition-opacity">
-        <div className={`relative shrink-0 w-12 h-12 rounded-sm border-2 overflow-hidden shadow-md ${statusClasses.split(' ')[0]}`}>
-          <Image src={profile.avatarUrl} alt="Steam Avatar" fill className="object-cover" />
+      {(profile.miniprofileVideoUrl || profile.miniprofileBackgroundUrl) && (
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-xl">
+          {profile.miniprofileVideoUrl ? (
+            <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-40">
+              <source src={profile.miniprofileVideoUrl} type="video/mp4" />
+            </video>
+          ) : (
+            <Image src={profile.miniprofileBackgroundUrl} alt="Background" fill className="object-cover opacity-40" />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         </div>
-        <div className="flex flex-col overflow-hidden">
+      )}
+
+      <a href={profile.profileUrl} target="_blank" rel="noopener noreferrer" className="relative z-10 flex items-center gap-3 group hover:opacity-80 transition-opacity">
+        <div className={`relative shrink-0 w-12 h-12 ${!profile.avatarFrameUrl ? `rounded-sm border-2 overflow-hidden shadow-md ${statusClasses.split(' ')[0]}` : ''}`}>
+          <div className={profile.avatarFrameUrl ? "absolute inset-[5px] rounded-sm overflow-hidden shadow-sm" : "w-full h-full"}>
+            <Image src={profile.avatarUrl} alt="Steam Avatar" fill className="object-cover" />
+          </div>
+          {profile.avatarFrameUrl && (
+            <div className="absolute inset-[-7px] z-10 pointer-events-none scale-[1.05]">
+              <Image src={profile.avatarFrameUrl} alt="Avatar Frame" fill className="object-contain" />
+            </div>
+          )}
+        </div>
+        <div className="flex flex-col overflow-hidden min-w-0">
           <div className="flex items-center gap-2">
             <span className={`text-sm font-bold truncate ${c.textPrimary}`}>{profile.name}</span>
-            <div className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider text-white ${statusClasses.split(' ')[1]}`}>
-              {profile.statusText === 'Offline' ? 'Probably Touching grass' : profile.statusText}
+            <div className={`shrink-0 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider text-white ${statusClasses.split(' ')[1]}`}>
+              {profile.statusText === 'Offline' ? 'Touching grass' : profile.statusText}
             </div>
           </div>
           {profile.currentGame ? (
@@ -117,38 +136,112 @@ export default function SteamStatus() {
         </div>
       </a>
 
-      <div className={`w-full h-[1px] bg-gradient-to-r from-transparent ${c.divider} to-transparent`} />
+      <div className={`relative z-10 w-full h-[1px] bg-gradient-to-r from-transparent ${c.divider} to-transparent`} />
 
-
-      {recentGames.length > 0 && (
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+        
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-1.5 mb-1">
             <MonitorPlay size={12} className={c.icon} />
-            <span className={`text-[10px] font-bold uppercase tracking-widest ${c.textSecondary}`}>Recently Played</span>
+            <span className={`text-[10px] font-bold uppercase tracking-widest ${c.textSecondary}`}>Recent Activity</span>
           </div>
-
           <div className="flex flex-col gap-2">
-            {recentGames.map((game) => (
-              <div key={game.appid} className="flex items-center gap-2">
-                <div className="relative w-6 h-6 shrink-0 rounded overflow-hidden">
-                  <Image
-                    src={`http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${game.img_icon_url}.jpg`}
-                    alt={game.name}
-                    fill
-                    className="object-cover"
-                  />
+            {recentGames && recentGames.length > 0 ? (
+              recentGames.map((game) => (
+                <div key={game.appid} className="flex items-center gap-2">
+                  <div className="relative w-6 h-6 shrink-0 rounded overflow-hidden">
+                    {game.img_icon_url ? (
+                      <Image src={`http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${game.img_icon_url}.jpg`} alt={game.name} fill className="object-cover" />
+                    ) : (
+                      <div className="w-full h-full bg-black/20" />
+                    )}
+                  </div>
+                  <div className="flex flex-col min-w-0">
+                    <span className={`text-xs font-bold truncate ${c.textPrimary}`}>{game.name}</span>
+                    <span className={`text-[10px] ${c.textSecondary} flex items-center gap-1`}>
+                      <Clock size={10} /> {Math.round(game.playtime_2weeks / 60)} hrs past 2 weeks
+                    </span>
+                  </div>
                 </div>
-                <div className="flex flex-col min-w-0">
-                  <span className={`text-xs font-bold truncate ${c.textPrimary}`}>{game.name}</span>
-                  <span className={`text-[10px] ${c.textSecondary} flex items-center gap-1`}>
-                    <Clock size={10} /> {Math.round(game.playtime_2weeks / 60)} hrs past 2 weeks
-                  </span>
-                </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <span className={`text-xs ${c.textSecondary}`}>No recent activity</span>
+            )}
           </div>
         </div>
-      )}
+
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-1.5 mb-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={c.icon}>
+              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+              <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+              <path d="M4 22h16"/>
+              <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+              <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+              <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+            </svg>
+            <span className={`text-[10px] font-bold uppercase tracking-widest ${c.textSecondary}`}>Top Games</span>
+          </div>
+          <div className="flex flex-col gap-2">
+            {data.topGames && data.topGames.length > 0 ? (
+              data.topGames.map((game) => (
+                <div key={game.appid} className="flex items-center gap-2">
+                  <div className="relative w-6 h-6 shrink-0 rounded overflow-hidden">
+                    {game.img_icon_url ? (
+                      <Image src={`http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${game.img_icon_url}.jpg`} alt={game.name} fill className="object-cover" />
+                    ) : (
+                      <div className="w-full h-full bg-black/20" />
+                    )}
+                  </div>
+                  <div className="flex flex-col min-w-0">
+                    <span className={`text-xs font-bold truncate ${c.textPrimary}`}>{game.name}</span>
+                    <span className={`text-[10px] ${c.textSecondary} flex items-center gap-1`}>
+                      <Clock size={10} /> {Math.round(game.playtime_forever / 60)} hrs total
+                    </span>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <span className={`text-xs ${c.textSecondary}`}>No games found</span>
+            )}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-1.5 mb-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={c.icon}>
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+            </svg>
+            <span className={`text-[10px] font-bold uppercase tracking-widest ${c.textSecondary}`}>Favorite Games</span>
+          </div>
+          <div className="flex flex-col gap-2">
+            {data.favoriteGames && data.favoriteGames.length > 0 ? (
+              data.favoriteGames.map((game) => (
+                <div key={game.appid} className="flex items-center gap-2">
+                  <div className="relative w-6 h-6 shrink-0 rounded overflow-hidden">
+                    {game.img_icon_url ? (
+                      <Image src={`http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${game.img_icon_url}.jpg`} alt={game.name} fill className="object-cover" />
+                    ) : (
+                      <div className="w-full h-full bg-black/20 flex items-center justify-center">
+                        <span className="text-[8px] text-white/50">{game.appid}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-col min-w-0">
+                    <span className={`text-xs font-bold truncate ${c.textPrimary}`}>{game.name}</span>
+                    <span className={`text-[10px] ${c.textSecondary} flex items-center gap-1`}>
+                      <Clock size={10} /> {Math.round(game.playtime_forever / 60)} hrs total
+                    </span>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <span className={`text-xs ${c.textSecondary}`}>No favorites set</span>
+            )}
+          </div>
+        </div>
+
+      </div>
 
     </div>
   );
