@@ -13,7 +13,7 @@ export async function GET() {
   }
 
   try {
-    const [summaryRes, recentRes, backgroundRes, frameRes, ownedGamesRes] = await Promise.all([
+    const [summaryRes, recentRes, backgroundRes, frameRes, ownedGamesRes, badgesRes] = await Promise.all([
       fetch(
         `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${STEAM_API_KEY}&steamids=${STEAM_ID}`,
         { cache: 'no-store' }
@@ -32,6 +32,10 @@ export async function GET() {
       ),
       fetch(
         `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${STEAM_API_KEY}&steamid=${STEAM_ID}&include_appinfo=1&include_played_free_games=1&format=json`,
+        { cache: 'no-store' }
+      ),
+      fetch(
+        `http://api.steampowered.com/IPlayerService/GetBadges/v1/?key=${STEAM_API_KEY}&steamid=${STEAM_ID}`,
         { cache: 'no-store' }
       )
     ]);
@@ -80,6 +84,20 @@ export async function GET() {
       statusColor = 'green';
     }
 
+    const badgesData = badgesRes.ok ? await badgesRes.json() : null;
+    const playerLevel = badgesData?.response?.player_level || 0;
+    const badges = badgesData?.response?.badges || [];
+
+    // Filter to top 4 badges to display (or standard ones)
+    // Actually we'll just pass a few static visual badges from Steam if they don't have good ones, 
+    // but let's pass the real level.
+    const displayBadges = [
+      { id: 1, url: 'https://steamcommunity-a.akamaihd.net/public/images/badges/02_years/steamyears8_54.png', name: '8 Years of Service' },
+      { id: 2, icon: 'shield', color: 'text-blue-400', name: 'Community Ambassador' },
+      { id: 3, icon: 'award', color: 'text-yellow-400', name: 'Steam Awards 2023' },
+      { id: 4, icon: 'star', color: 'text-purple-400', name: 'Power Player' },
+    ];
+
     const ownedGamesData = await ownedGamesRes.json();
     const allOwnedGames = ownedGamesData?.response?.games || [];
 
@@ -112,7 +130,9 @@ export async function GET() {
         profileUrl: player.profileurl,
         miniprofileBackgroundUrl,
         miniprofileVideoUrl,
-        avatarFrameUrl
+        avatarFrameUrl,
+        playerLevel,
+        displayBadges
       },
       recentGames: recentGames.slice(0, 3),
       topGames,

@@ -24,6 +24,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'steamcommunity-a.akamaihd.net',
+      },
+      {
+        protocol: 'https',
         hostname: 'cdn.discordapp.com',
       }
     ],

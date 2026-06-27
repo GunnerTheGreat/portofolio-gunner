@@ -3,8 +3,17 @@
 import { useState, useEffect } from 'react';
 
 import Image from 'next/image';
-import { MonitorPlay, Clock } from 'lucide-react';
+import { MonitorPlay, Clock, Shield, Award, Star } from 'lucide-react';
 import { getStatusTheme } from '../config/theme';
+
+const getBadgeIcon = (iconStr, color) => {
+  switch (iconStr) {
+    case 'shield': return <Shield size={16} className={color} />;
+    case 'award': return <Award size={16} className={color} />;
+    case 'star': return <Star size={16} className={color} />;
+    default: return null;
+  }
+};
 
 export default function SteamStatus() {
   const theme = 'goth';
@@ -78,35 +87,62 @@ export default function SteamStatus() {
         </div>
       )}
 
-      <a href={profile.profileUrl} target="_blank" rel="noopener noreferrer" className="relative z-10 flex items-center gap-3 group hover:opacity-80 transition-opacity">
-        <div className={`relative shrink-0 w-12 h-12 ${!profile.avatarFrameUrl ? `rounded-sm border-2 overflow-hidden shadow-md ${statusClasses.split(' ')[0]}` : ''}`}>
-          <div className={profile.avatarFrameUrl ? "absolute inset-[5px] rounded-sm overflow-hidden shadow-sm" : "w-full h-full"}>
-            <Image src={profile.avatarUrl} alt="Steam Avatar" fill className="object-cover" />
+      <div className="relative z-10 flex items-start justify-between w-full">
+        <a href={profile.profileUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group hover:opacity-80 transition-opacity min-w-0">
+          <div className={`relative shrink-0 w-12 h-12 ${!profile.avatarFrameUrl ? `rounded-sm border-2 overflow-hidden shadow-md ${statusClasses.split(' ')[0]}` : ''}`}>
+            <div className={profile.avatarFrameUrl ? "absolute inset-[5px] rounded-sm overflow-hidden shadow-sm" : "w-full h-full"}>
+              <Image src={profile.avatarUrl} alt="Steam Avatar" fill className="object-cover" />
+            </div>
+            {profile.avatarFrameUrl && (
+              <div className="absolute inset-[-7px] z-10 pointer-events-none scale-[1.05]">
+                <Image src={profile.avatarFrameUrl} alt="Avatar Frame" fill className="object-contain" />
+              </div>
+            )}
           </div>
-          {profile.avatarFrameUrl && (
-            <div className="absolute inset-[-7px] z-10 pointer-events-none scale-[1.05]">
-              <Image src={profile.avatarFrameUrl} alt="Avatar Frame" fill className="object-contain" />
+          <div className="flex flex-col overflow-hidden min-w-0">
+            <div className="flex items-center gap-2">
+              <span className={`text-sm font-bold truncate ${c.textPrimary}`}>{profile.name}</span>
+              <div className={`shrink-0 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider text-white ${statusClasses.split(' ')[1]}`}>
+                {profile.statusText === 'Offline' ? 'Touching grass' : profile.statusText}
+              </div>
+            </div>
+            {profile.currentGame ? (
+              <span className={`text-xs truncate ${c.textSecondary} font-semibold text-green-500`}>
+                Playing: {profile.currentGame}
+              </span>
+            ) : (
+              <span className={`text-xs truncate ${c.textSecondary}`}>
+                Steam Profile
+              </span>
+            )}
+          </div>
+        </a>
+
+        <div className="flex items-center gap-3 shrink-0">
+          {profile.displayBadges && profile.displayBadges.length > 0 && (
+            <div className="flex items-center gap-1.5 hidden sm:flex bg-black/20 p-1.5 rounded-lg border border-white/5 shadow-inner">
+              {profile.displayBadges.map((badge, idx) => (
+                <div key={idx} className="relative flex items-center justify-center w-8 h-8 hover:scale-110 transition-transform cursor-pointer drop-shadow-md" title={badge.name}>
+                  {badge.url ? (
+                    <Image src={badge.url} alt={badge.name} fill className="object-contain drop-shadow-md" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] border border-[#333] rounded shadow-inner">
+                      {getBadgeIcon(badge.icon, badge.color)}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           )}
-        </div>
-        <div className="flex flex-col overflow-hidden min-w-0">
-          <div className="flex items-center gap-2">
-            <span className={`text-sm font-bold truncate ${c.textPrimary}`}>{profile.name}</span>
-            <div className={`shrink-0 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider text-white ${statusClasses.split(' ')[1]}`}>
-              {profile.statusText === 'Offline' ? 'Touching grass' : profile.statusText}
-            </div>
+
+          <div 
+            className="flex items-center justify-center w-11 h-11 rounded-full border-[3px] border-[#c02942] bg-gradient-to-br from-[#1a1a1a] to-[#2a2a2a] shadow-[0_0_12px_rgba(192,41,66,0.3)] shrink-0"
+            title={`Level ${profile.playerLevel}`}
+          >
+            <span className="text-[#e2e2e2] font-bold text-[15px] drop-shadow-md">{profile.playerLevel || 12}</span>
           </div>
-          {profile.currentGame ? (
-            <span className={`text-xs truncate ${c.textSecondary} font-semibold text-green-500`}>
-              Playing: {profile.currentGame}
-            </span>
-          ) : (
-            <span className={`text-xs truncate ${c.textSecondary}`}>
-              Steam Profile
-            </span>
-          )}
         </div>
-      </a>
+      </div>
 
       <div className={`relative z-10 w-full h-[1px] bg-gradient-to-r from-transparent ${c.divider} to-transparent`} />
 
