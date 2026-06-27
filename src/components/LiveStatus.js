@@ -77,45 +77,69 @@ export default function LiveStatus() {
 
 
   const customStatus = status.activities.find(a => a.type === 4);
-
-
   const spotify = status.spotify;
 
+  const discordUser = status.discord_user;
+  const avatarUrl = discordUser && discordUser.avatar ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png` : null;
+  const nameplateAsset = discordUser?.collectibles?.nameplate?.asset;
+  const nameplateUrl = nameplateAsset ? `https://cdn.discordapp.com/assets/collectibles/${nameplateAsset}static.png` : null;
+  const displayName = discordUser?.display_name || discordUser?.username || 'Discord User';
+
   return (
-    <div className={`flex flex-col gap-3 p-4 rounded-xl border-2 ${c.border} ${c.bg} transition-colors duration-500 w-full overflow-hidden`} style={glassStyle}>
+    <div className={`relative flex flex-col p-4 rounded-xl border-2 ${c.border} ${c.bg} transition-colors duration-500 w-full overflow-hidden`} style={glassStyle}>
 
+      {nameplateUrl && (
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-60 mix-blend-screen">
+          <img src={nameplateUrl} alt="Nameplate" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+        </div>
+      )}
 
-      <div className="flex flex-col gap-1.5">
-        <div className="flex items-center gap-2">
-          <div className={`relative flex items-center justify-center`}>
-            <div className={`absolute w-3 h-3 rounded-full ${statusColor} animate-ping opacity-75`} />
-            <div className={`relative w-3 h-3 rounded-full ${statusColor}`} />
+      <div className="relative z-10 flex flex-col gap-3">
+        <div className="relative flex items-center gap-3 w-full p-2 rounded-lg border border-white/5 bg-black/10">
+          
+          <div className="relative z-10 shrink-0 w-12 h-12 rounded-sm overflow-hidden shadow-md border border-white/10">
+            {avatarUrl ? (
+              <Image src={avatarUrl} alt="Discord Avatar" fill className="object-cover" />
+            ) : (
+              <div className="w-full h-full bg-black/40 flex items-center justify-center text-xs text-white/50">?</div>
+            )}
           </div>
-          <span className={`text-sm font-bold uppercase tracking-wider ${c.textPrimary}`}>
-            {status.discord_status === 'dnd' ? 'Do Not Disturb' : status.discord_status}
-          </span>
+          
+          <div className="relative z-10 flex flex-col overflow-hidden min-w-0 flex-1">
+            <span className={`text-sm font-bold truncate ${c.textPrimary}`}>{displayName}</span>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <div className={`relative flex items-center justify-center shrink-0`}>
+                <div className={`absolute w-2.5 h-2.5 rounded-full ${statusColor} animate-ping opacity-75`} />
+                <div className={`relative w-2.5 h-2.5 rounded-full ${statusColor}`} />
+              </div>
+              <span className={`text-[10px] font-bold uppercase tracking-wider ${c.textSecondary} truncate`}>
+                {status.discord_status === 'dnd' ? 'Do Not Disturb' : status.discord_status}
+              </span>
+            </div>
+          </div>
         </div>
 
-        {customStatus && customStatus.state && (
-          <div className={`text-sm italic ${c.textSecondary} ml-5 flex items-center gap-1.5`}>
-            {customStatus.emoji && customStatus.emoji.id ? (
-              <img
-                src={`https://cdn.discordapp.com/emojis/${customStatus.emoji.id}.${customStatus.emoji.animated ? 'gif' : 'png'}`}
-                alt="emoji"
-                className="w-4 h-4 object-contain"
-              />
-            ) : customStatus.emoji && customStatus.emoji.name ? (
-              <span>{customStatus.emoji.name}</span>
-            ) : null}
-            <span>{customStatus.state}</span>
+        {(customStatus && customStatus.state) && (
+          <div className="flex flex-col gap-1.5 px-1 mt-1">
+            <div className={`text-sm italic ${c.textSecondary} flex items-center gap-1.5`}>
+              {customStatus.emoji && customStatus.emoji.id ? (
+                <img
+                  src={`https://cdn.discordapp.com/emojis/${customStatus.emoji.id}.${customStatus.emoji.animated ? 'gif' : 'png'}`}
+                  alt="emoji"
+                  className="w-4 h-4 object-contain"
+                />
+              ) : customStatus.emoji && customStatus.emoji.name ? (
+                <span>{customStatus.emoji.name}</span>
+              ) : null}
+              <span className="truncate">{customStatus.state}</span>
+            </div>
           </div>
         )}
-      </div>
 
-      <div className={`w-full h-[1px] bg-gradient-to-r from-transparent ${c.divider} to-transparent`} />
+        <div className={`w-full h-[1px] bg-gradient-to-r from-transparent ${c.divider} to-transparent`} />
 
-
-      <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3">
 
         {spotify ? (
           <div className="flex items-center gap-3">
@@ -169,7 +193,7 @@ export default function LiveStatus() {
           </div>
         )}
       </div>
-
+      </div>
     </div>
   );
 }
