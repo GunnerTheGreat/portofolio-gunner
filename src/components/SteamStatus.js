@@ -4,11 +4,10 @@ import { useState, useEffect } from 'react';
 
 import Image from 'next/image';
 import { MonitorPlay, Clock } from 'lucide-react';
+import { getStatusTheme } from '../config/theme';
 
 export default function SteamStatus() {
   const theme = 'goth';
-  const isGoth = theme === 'goth';
-  const isGlass = theme === 'glass';
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -36,34 +35,7 @@ export default function SteamStatus() {
     return () => clearInterval(interval);
   }, []);
 
-  const c = isGlass ? {
-    bg: '',
-    border: 'border-[rgba(255,255,255,0.1)]',
-    textPrimary: 'text-[#e6edf3]',
-    textSecondary: 'text-[rgba(230,237,243,0.5)]',
-    icon: 'text-[#88c0ff]',
-    divider: 'via-[rgba(255,255,255,0.1)]'
-  } : isGoth ? {
-    bg: 'bg-[#111]',
-    border: 'border-[#333]',
-    textPrimary: 'text-[#e0e0e0]',
-    textSecondary: 'text-[#888]',
-    icon: 'text-[#666]',
-    divider: 'via-[#333]'
-  } : {
-    bg: 'bg-[#fff8f0]',
-    border: 'border-[#f5b4c8]',
-    textPrimary: 'text-[#d4839a]',
-    textSecondary: 'text-[#c4728a]/80',
-    icon: 'text-[#f0a0b4]',
-    divider: 'via-[#f8d0dc]'
-  };
-
-  const glassStyle = isGlass ? {
-    background: 'rgba(255, 255, 255, 0.04)',
-    backdropFilter: 'blur(8px)',
-    WebkitBackdropFilter: 'blur(8px)',
-  } : undefined;
+  const { c, glassStyle, isGlass } = getStatusTheme(theme);
 
   if (isLoading) {
     return (
