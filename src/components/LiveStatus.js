@@ -30,6 +30,16 @@ export default function LiveStatus() {
 
   const activity = status.activities.find(a => a.type !== 4);
 
+  let activityImageUrl = null;
+  if (activity) {
+    if (activity.assets && activity.assets.large_image) {
+      activityImageUrl = activity.assets.large_image.startsWith('mp:external/') 
+        ? `https://media.discordapp.net/external/${activity.assets.large_image.replace('mp:external/', '')}`
+        : `https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.large_image}.png?size=128`;
+    } else if (activity.application_id) {
+      activityImageUrl = `https://dcdn.dstn.to/app-icons/${activity.application_id}?size=128`;
+    }
+  }
 
   const customStatus = status.activities.find(a => a.type === 4);
   const spotify = status.spotify;
@@ -113,12 +123,10 @@ export default function LiveStatus() {
         ) : activity ? (
 
           <div className="flex items-center gap-3">
-            {activity.assets && activity.assets.large_image && activity.application_id ? (
+            {activityImageUrl ? (
               <div className="relative shrink-0 w-12 h-12 rounded-md overflow-hidden shadow-md">
                 <img 
-                  src={activity.assets.large_image.startsWith('mp:external/') 
-                    ? `https://media.discordapp.net/external/${activity.assets.large_image.replace('mp:external/', '')}`
-                    : `https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.large_image}.png?size=128`}
+                  src={activityImageUrl}
                   alt={activity.name} 
                   className="w-full h-full object-cover"
                   onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
