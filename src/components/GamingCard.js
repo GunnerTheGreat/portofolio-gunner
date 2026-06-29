@@ -1,6 +1,6 @@
 'use client';
 
-import { FaSteam, FaDiscord } from 'react-icons/fa';
+import { FaSteam, FaDiscord, FaFacebook, FaInstagram, FaYoutube } from 'react-icons/fa';
 import { SiRiotgames, SiUbisoft } from 'react-icons/si';
 import LiveStatus from './LiveStatus';
 import SteamStatus from './SteamStatus';
@@ -12,7 +12,10 @@ export default function GamingCard() {
     { name: "Riot Games", ign: "GOD OF GUNNERS#myzil", icon: <SiRiotgames size={18} />, url: "https://tracker.gg/valorant/profile/riot/GOD%20OF%20GUNNERS%23myzil/overview" },
     { name: "Steam", ign: "Code: 492348514", icon: <FaSteam size={18} />, url: "https://steamcommunity.com/profiles/76561198452614242" },
     { name: "Ubisoft", ign: "GunnerTheGreat2", icon: <SiUbisoft size={18} />, url: "#" },
-    { name: "Discord", ign: "djgunnertherevival", icon: <FaDiscord size={18} />, url: "https://discordapp.com/users/653802183795408917" }
+    { name: "Discord", ign: "djgunnertherevival", icon: <FaDiscord size={18} />, url: "https://discordapp.com/users/653802183795408917" },
+    { name: "Facebook", ign: "GunnerTheGreat69", icon: <FaFacebook size={18} />, url: "https://www.facebook.com/GunnerTheGreat69" },
+    { name: "Instagram", ign: "justgunner69", icon: <FaInstagram size={18} />, url: "https://www.instagram.com/justgunner69" },
+    { name: "YouTube", ign: "@gunner5325", icon: <FaYoutube size={18} />, url: "https://www.youtube.com/@gunner5325" }
   ];
 
   return (
