@@ -46,6 +46,8 @@ export default function LiveStatus() {
 
   const discordUser = status.discord_user;
   const avatarUrl = discordUser && discordUser.avatar ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png` : null;
+  const avatarDecorationAsset = discordUser?.avatar_decoration_data?.asset;
+  const avatarDecorationUrl = avatarDecorationAsset ? `https://cdn.discordapp.com/avatar-decoration-presets/${avatarDecorationAsset}.png?size=96` : null;
   const nameplateAsset = discordUser?.collectibles?.nameplate?.asset;
   const nameplateUrl = nameplateAsset ? `https://cdn.discordapp.com/assets/collectibles/${nameplateAsset}static.png` : null;
   const displayName = discordUser?.display_name || discordUser?.username || 'Discord User';
@@ -63,11 +65,22 @@ export default function LiveStatus() {
       <div className="relative z-10 flex flex-col gap-3">
         <div className="relative flex items-center gap-3 w-full p-2 rounded-lg border border-white/5 bg-black/10">
           
-          <div className="relative z-10 shrink-0 w-12 h-12 rounded-sm overflow-hidden shadow-md border border-white/10">
-            {avatarUrl ? (
-              <Image src={avatarUrl} alt="Discord Avatar" fill className="object-cover" />
-            ) : (
-              <div className="w-full h-full bg-black/40 flex items-center justify-center text-xs text-white/50">?</div>
+          <div className="relative z-10 shrink-0 w-12 h-12">
+            <div className="relative w-full h-full rounded-full overflow-hidden shadow-md border border-white/10">
+              {avatarUrl ? (
+                <Image src={avatarUrl} alt="Discord Avatar" fill className="object-cover" />
+              ) : (
+                <div className="w-full h-full bg-black/40 flex items-center justify-center text-xs text-white/50">?</div>
+              )}
+            </div>
+            {avatarDecorationUrl && (
+              <div className="absolute -inset-[18%] z-20 pointer-events-none">
+                <img 
+                  src={avatarDecorationUrl} 
+                  alt="Avatar Decoration" 
+                  className="w-full h-full object-contain" 
+                />
+              </div>
             )}
           </div>
           
