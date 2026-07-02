@@ -32,6 +32,13 @@ export default function PortfolioContent({ graphics, videos, music, apps }) {
   const [showAbout, setShowAbout] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
   const [showBgVideo, setShowBgVideo] = useState(false);
+  const bgVideoRef = useRef(null);
+
+  useEffect(() => {
+    if (showBgVideo && bgVideoRef.current) {
+      bgVideoRef.current.play().catch(err => console.log('Video autoplay failed:', err));
+    }
+  }, [showBgVideo]);
 
   const container = useRef();
   const isAutoScrolling = useRef(false);
@@ -225,6 +232,7 @@ export default function PortfolioContent({ graphics, videos, music, apps }) {
             className="fixed inset-0 w-full h-full z-0 pointer-events-none overflow-hidden"
           >
             <video
+              ref={bgVideoRef}
               src="/30secs.mp4"
               autoPlay
               loop
