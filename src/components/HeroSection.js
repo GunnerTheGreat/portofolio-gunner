@@ -6,13 +6,13 @@ import AnimeBackground from './AnimeBackground';
 import WavesCursor from './WavesCursor';
 import { portfolioTheme as c } from '../config/theme';
 
-export default function HeroSection({ isLoading, setShowConsole, handleGetStarted }) {
+export default function HeroSection({ isLoading, setShowConsole, handleGetStarted, showBgVideo }) {
   return (
     <section id="hero-section" className="relative h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden">
-      <WavesCursor />
-      {!isLoading && <AnimeBackground />}
+      {!showBgVideo && <WavesCursor />}
+      {!isLoading && !showBgVideo && <AnimeBackground />}
 
-      <div className={`absolute inset-0 ${c.heroOverlay} pointer-events-none`} />
+      <div className={`absolute inset-0 ${showBgVideo ? 'bg-transparent' : c.heroOverlay} pointer-events-none transition-colors duration-1000`} />
 
       {/* 3D VHS Ambient Text with Static Glitch Effect */}
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-20 overflow-hidden">

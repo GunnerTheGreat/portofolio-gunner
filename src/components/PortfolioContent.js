@@ -31,6 +31,7 @@ export default function PortfolioContent({ graphics, videos, music, apps }) {
   const [isLocked, setIsLocked] = useState(true);
   const [showAbout, setShowAbout] = useState(false);
   const [showConsole, setShowConsole] = useState(false);
+  const [showBgVideo, setShowBgVideo] = useState(false);
 
   const container = useRef();
   const isAutoScrolling = useRef(false);
@@ -212,14 +213,41 @@ export default function PortfolioContent({ graphics, videos, music, apps }) {
         {"[>_]"}
       </button>
 
-      <BackgroundMusic startPlaying={startMusic} />
+      <BackgroundMusic startPlaying={startMusic} onVideoChange={setShowBgVideo} />
 
-      <main className="min-h-screen relative z-[1] bg-[#000]" ref={container}>
+      <AnimatePresence>
+        {showBgVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5 }}
+            className="fixed inset-0 w-full h-full z-0 pointer-events-none overflow-hidden"
+          >
+            <video
+              src="/videoplayback.webm#t=15,118"
+              autoPlay
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+              onTimeUpdate={(e) => {
+                if (e.target.currentTime >= 118) {
+                  e.target.currentTime = 15;
+                  e.target.play().catch(() => {});
+                }
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <main className={`min-h-screen relative z-[1] transition-colors duration-1000 ${showBgVideo ? 'bg-black/60' : 'bg-[#000]'}`} ref={container}>
 
         <HeroSection 
           isLoading={isLoading} 
           setShowConsole={setShowConsole} 
           handleGetStarted={handleGetStarted} 
+          showBgVideo={showBgVideo}
         />
 
         <nav id="main-nav" className={`sticky top-0 z-50 w-full md:w-auto md:mx-auto overflow-x-auto ${c.navBg} border-b md:border md:mt-4 ${c.navBorder} md:rounded-none px-4 py-3 mb-12 transition-all duration-500`}>
