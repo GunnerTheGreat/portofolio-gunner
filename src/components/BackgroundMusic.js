@@ -58,6 +58,30 @@ export default function BackgroundMusic({ startPlaying, onVideoChange }) {
   }, []);
 
   useEffect(() => {
+    const unlockAudio = () => {
+      if (audioRef.current && !hasStarted) {
+        audioRef.current.play().then(() => {
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }).catch(() => {});
+      }
+      window.removeEventListener('click', unlockAudio);
+      window.removeEventListener('keydown', unlockAudio);
+      window.removeEventListener('touchstart', unlockAudio);
+    };
+
+    window.addEventListener('click', unlockAudio);
+    window.addEventListener('keydown', unlockAudio);
+    window.addEventListener('touchstart', unlockAudio);
+
+    return () => {
+      window.removeEventListener('click', unlockAudio);
+      window.removeEventListener('keydown', unlockAudio);
+      window.removeEventListener('touchstart', unlockAudio);
+    };
+  }, [hasStarted]);
+
+  useEffect(() => {
     if (trackInfo.hasLyrics) {
       fetch('/Mr.Kitty - Glow.lrc')
         .then(res => res.text())

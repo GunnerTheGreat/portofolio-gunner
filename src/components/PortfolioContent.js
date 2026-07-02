@@ -225,17 +225,12 @@ export default function PortfolioContent({ graphics, videos, music, apps }) {
             className="fixed inset-0 w-full h-full z-0 pointer-events-none overflow-hidden"
           >
             <video
-              src="/videoplayback.webm#t=15,118"
+              src="/30secs.mp4"
               autoPlay
+              loop
               muted
               playsInline
               className="w-full h-full object-cover"
-              onTimeUpdate={(e) => {
-                if (e.target.currentTime >= 118) {
-                  e.target.currentTime = 15;
-                  e.target.play().catch(() => {});
-                }
-              }}
             />
           </motion.div>
         )}
