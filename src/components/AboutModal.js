@@ -5,13 +5,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Cpu, Palette, Terminal } from 'lucide-react';
 import { ScrambleText } from './ui/ScrambleText';
 import { MAIN_SKILLS, SOFTWARE_SKILLS, TECH_SKILLS } from '../data/skills';
+import dynamic from 'next/dynamic';
+
+const Chisa = dynamic(() => import('./Chisa'), { ssr: false });
 
 export default function AboutModal({ isOpen, onClose }) {
   const [activeTab, setActiveTab] = useState('software');
   const currentSkills = activeTab === 'software' ? SOFTWARE_SKILLS : TECH_SKILLS;
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center px-4 bg-[#000]/95 backdrop-blur-sm animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-[10005] flex items-center justify-center px-4 bg-[#000]/95 backdrop-blur-sm animate-in fade-in duration-300">
 
       <div className="absolute inset-0" onClick={onClose} />
 
@@ -45,7 +48,7 @@ export default function AboutModal({ isOpen, onClose }) {
           filter: 'invert(100%)',
           transition: { duration: 0.2 }
         }}
-        className="relative w-full max-w-5xl bg-[#050505] border border-[#ff1a1a] flex flex-col md:flex-row max-h-[90vh] overflow-hidden"
+        className="relative w-full max-w-5xl bg-[#050505] border border-[#ff1a1a] flex flex-col md:flex-row max-h-[90vh]"
       >
         <button
           onClick={onClose}
@@ -54,8 +57,12 @@ export default function AboutModal({ isOpen, onClose }) {
           <X size={20} strokeWidth={2.5} />
         </button>
 
-        <div className="w-full md:w-2/5 relative">
-          <div className="h-64 md:h-full w-full bg-[#000]">
+        <div className="hidden lg:block absolute -left-[124px] bottom-0 pointer-events-none z-[10000]">
+          <Chisa side="left" width="300px" height="450px" />
+        </div>
+
+        <div className="w-full md:w-2/5 relative z-10">
+          <div className="h-64 md:h-full w-full bg-[#000] relative overflow-hidden">
             <Image
               src="/ew.jpg"
               alt="My Profile Picture"

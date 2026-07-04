@@ -23,6 +23,10 @@ import BackgroundMusic from './BackgroundMusic';
 import anime from 'animejs';
 import Intro3DTransition from './Intro3DTransition';
 import { portfolioTheme } from '../config/theme';
+import dynamic from 'next/dynamic';
+
+const Chisa = dynamic(() => import('./Chisa'), { ssr: false });
+
 
 export default function PortfolioContent({ graphics, videos, music, apps }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -244,7 +248,7 @@ export default function PortfolioContent({ graphics, videos, music, apps }) {
         )}
       </AnimatePresence>
 
-      <main className={`min-h-screen relative z-[1] transition-colors duration-1000 ${showBgVideo ? 'bg-black/60' : 'bg-[#000]'}`} ref={container}>
+      <main className={`min-h-screen relative transition-colors duration-1000 ${showBgVideo ? 'bg-black/60' : 'bg-[#000]'}`} ref={container}>
 
         <HeroSection 
           isLoading={isLoading} 
@@ -263,8 +267,13 @@ export default function PortfolioContent({ graphics, videos, music, apps }) {
           </ul>
         </nav>
 
-        <div className="max-w-7xl mx-auto px-4 pb-12">
-          <div className={`${c.cardBg} crt-monitor border ${c.cardBorder} overflow-hidden`}>
+        <div className="max-w-7xl mx-auto px-4 pb-12 relative">
+          
+          <div className="hidden lg:block absolute -left-[108px] top-[10%] z-[10000]">
+            <Chisa side="left" width="300px" height="450px" />
+          </div>
+
+          <div className={`${c.cardBg} crt-monitor border ${c.cardBorder} overflow-hidden relative z-10`}>
 
             <div className="h-8 flex items-center px-4 bg-[#0a0a0a] border-b border-[#222]">
               <div className="font-mono text-[10px] text-[#ff1a1a] tracking-widest uppercase opacity-70">
