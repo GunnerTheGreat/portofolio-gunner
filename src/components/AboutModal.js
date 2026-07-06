@@ -5,9 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Cpu, Palette, Terminal } from 'lucide-react';
 import { ScrambleText } from './ui/ScrambleText';
 import { MAIN_SKILLS, SOFTWARE_SKILLS, TECH_SKILLS } from '../data/skills';
-import dynamic from 'next/dynamic';
-
-const Chisa = dynamic(() => import('./Chisa'), { ssr: false });
 
 export default function AboutModal({ isOpen, onClose }) {
   const [activeTab, setActiveTab] = useState('software');
@@ -57,9 +54,7 @@ export default function AboutModal({ isOpen, onClose }) {
           <X size={20} strokeWidth={2.5} />
         </button>
 
-        <div className="hidden lg:block absolute -left-[124px] bottom-0 pointer-events-none z-[10000]">
-          <Chisa side="left" width="300px" height="450px" />
-        </div>
+
 
         <div className="w-full md:w-2/5 relative z-10">
           <div className="h-64 md:h-full w-full bg-[#000] relative overflow-hidden">

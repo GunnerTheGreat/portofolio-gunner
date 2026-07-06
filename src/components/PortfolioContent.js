@@ -23,9 +23,6 @@ import BackgroundMusic from './BackgroundMusic';
 import anime from 'animejs';
 import Intro3DTransition from './Intro3DTransition';
 import { portfolioTheme } from '../config/theme';
-import dynamic from 'next/dynamic';
-
-const Chisa = dynamic(() => import('./Chisa'), { ssr: false });
 
 
 export default function PortfolioContent({ graphics, videos, music, apps }) {
@@ -269,9 +266,7 @@ export default function PortfolioContent({ graphics, videos, music, apps }) {
 
         <div className="max-w-7xl mx-auto px-4 pb-12 relative">
           
-          <div className="hidden lg:block absolute -left-[108px] top-[10%] z-[10000]">
-            <Chisa side="left" width="300px" height="450px" />
-          </div>
+
 
           <div className={`${c.cardBg} crt-monitor border ${c.cardBorder} overflow-hidden relative z-10`}>
 
