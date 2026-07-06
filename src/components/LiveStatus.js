@@ -28,18 +28,7 @@ export default function LiveStatus() {
   if (status.discord_status === 'idle') statusColor = c.idle;
   if (status.discord_status === 'dnd') statusColor = c.dnd;
 
-  const activity = status.activities.find(a => a.type !== 4);
-
-  let activityImageUrl = null;
-  if (activity) {
-    if (activity.assets && activity.assets.large_image) {
-      activityImageUrl = activity.assets.large_image.startsWith('mp:external/') 
-        ? `https://media.discordapp.net/external/${activity.assets.large_image.replace('mp:external/', '')}`
-        : `https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.large_image}.png?size=128`;
-    } else if (activity.application_id) {
-      activityImageUrl = `https://dcdn.dstn.to/app-icons/${activity.application_id}?size=128`;
-    }
-  }
+  const activities = status.activities.filter(a => a.type !== 4 && a.id !== 'spotify:1');
 
   const customStatus = status.activities.find(a => a.type === 4);
   const spotify = status.spotify;
@@ -119,7 +108,13 @@ export default function LiveStatus() {
 
         <div className="flex flex-col gap-3">
 
-        {spotify ? (
+        {(!spotify && activities.length === 0) && (
+          <div className={`text-xs italic ${c.textSecondary}`}>
+            Probably out touching grass . . .
+          </div>
+        )}
+
+        {spotify && (
           <div className="flex items-center gap-3">
             <div className="relative shrink-0 w-12 h-12 rounded-md overflow-hidden shadow-md">
               <Image src={spotify.album_art_url} alt="Album Art" fill className="object-cover" />
@@ -133,41 +128,48 @@ export default function LiveStatus() {
               <span className={`text-xs truncate ${c.textSecondary}`}>by {spotify.artist}</span>
             </div>
           </div>
-        ) : activity ? (
+        )}
 
-          <div className="flex items-center gap-3">
-            {activityImageUrl ? (
-              <div className="relative shrink-0 w-12 h-12 rounded-md overflow-hidden shadow-md">
-                <img 
-                  src={activityImageUrl}
-                  alt={activity.name} 
-                  className="w-full h-full object-cover"
-                  onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
-                />
-                <div className="hidden items-center justify-center w-full h-full border-2 border-[#333] bg-[#0a0a0a]">
+        {activities.map((activity, index) => {
+          let activityImageUrl = null;
+          if (activity.assets && activity.assets.large_image) {
+            activityImageUrl = activity.assets.large_image.startsWith('mp:external/') 
+              ? `https://media.discordapp.net/external/${activity.assets.large_image.replace('mp:external/', '')}`
+              : `https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.large_image}.png?size=128`;
+          } else if (activity.application_id) {
+            activityImageUrl = `https://dcdn.dstn.to/app-icons/${activity.application_id}?size=128`;
+          }
+
+          return (
+            <div key={activity.id || index} className="flex items-center gap-3">
+              {activityImageUrl ? (
+                <div className="relative shrink-0 w-12 h-12 rounded-md overflow-hidden shadow-md">
+                  <img 
+                    src={activityImageUrl}
+                    alt={activity.name} 
+                    className="w-full h-full object-cover"
+                    onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+                  />
+                  <div className="hidden items-center justify-center w-full h-full border-2 border-[#333] bg-[#0a0a0a]">
+                    <Gamepad2 size={24} className={c.icon} />
+                  </div>
+                </div>
+              ) : (
+                <div className={`flex items-center justify-center shrink-0 w-12 h-12 rounded-md border-2 ${c.border} ${isGoth ? 'bg-[#0a0a0a]' : 'bg-[#111]'}`}>
                   <Gamepad2 size={24} className={c.icon} />
                 </div>
+              )}
+              <div className="flex flex-col overflow-hidden">
+                <div className="flex items-center gap-1.5">
+                  <Activity size={12} className={c.icon} />
+                  <span className={`text-[10px] font-bold uppercase tracking-widest ${c.textSecondary}`}>Currently Playing</span>
+                </div>
+                <span className={`text-sm font-bold truncate ${c.textPrimary}`}>{activity.name}</span>
+                <span className={`text-xs truncate ${c.textSecondary}`}>{activity.details || 'In Game'}</span>
               </div>
-            ) : (
-              <div className={`flex items-center justify-center shrink-0 w-12 h-12 rounded-md border-2 ${c.border} ${isGoth ? 'bg-[#0a0a0a]' : 'bg-[#111]'}`}>
-                <Gamepad2 size={24} className={c.icon} />
-              </div>
-            )}
-            <div className="flex flex-col overflow-hidden">
-              <div className="flex items-center gap-1.5">
-                <Activity size={12} className={c.icon} />
-                <span className={`text-[10px] font-bold uppercase tracking-widest ${c.textSecondary}`}>Currently Playing</span>
-              </div>
-              <span className={`text-sm font-bold truncate ${c.textPrimary}`}>{activity.name}</span>
-              <span className={`text-xs truncate ${c.textSecondary}`}>{activity.details || 'In Game'}</span>
             </div>
-          </div>
-        ) : (
-
-          <div className={`text-xs italic ${c.textSecondary}`}>
-            Probably out touching grass . . .
-          </div>
-        )}
+          );
+        })}
       </div>
       </div>
     </div>
