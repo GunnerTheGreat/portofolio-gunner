@@ -23,9 +23,10 @@ import BackgroundMusic from './BackgroundMusic';
 import anime from 'animejs';
 import Intro3DTransition from './Intro3DTransition';
 import { portfolioTheme } from '../config/theme';
+import FriendsSection from './FriendsSection';
 
 
-export default function PortfolioContent({ graphics, videos, music, apps }) {
+export default function PortfolioContent({ graphics, videos, music, apps, friends }) {
   const [isLoading, setIsLoading] = useState(true);
   const [showEnter, setShowEnter] = useState(false);
   const [startMusic, setStartMusic] = useState(false);
@@ -261,6 +262,7 @@ export default function PortfolioContent({ graphics, videos, music, apps }) {
             <li><a href="#music" className={`px-4 py-2 rounded-none border ${c.navLinkBorder} ${c.navLinkText} ${c.navLinkHover} transition-all duration-200 block ${c.navLinkBg}`}>SYS.SND</a></li>
             <li><a href="#apps" className={`px-4 py-2 rounded-none border ${c.navLinkBorder} ${c.navLinkText} ${c.navLinkHover} transition-all duration-200 block ${c.navLinkBg}`}>SYS.APP</a></li>
             <li><a href="#hobbies" className={`px-4 py-2 rounded-none border ${c.navLinkBorder} ${c.navLinkText} ${c.navLinkHover} transition-all duration-200 block ${c.navLinkBg}`}>SYS.GAM</a></li>
+            <li><a href="#friends" className={`px-4 py-2 rounded-none border ${c.navLinkBorder} ${c.navLinkText} ${c.navLinkHover} transition-all duration-200 block ${c.navLinkBg}`}>SYS.PPL</a></li>
           </ul>
         </nav>
 
@@ -291,6 +293,8 @@ export default function PortfolioContent({ graphics, videos, music, apps }) {
                   <Guestbook />
                 </div>
               </section>
+
+              <FriendsSection friends={friends} />
 
               {graphics.length > 0 && (
                 <section id="graphics" className="gsap-section scroll-mt-32">

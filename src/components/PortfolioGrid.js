@@ -34,10 +34,6 @@ export default function PortfolioGrid({ items, isApp = false }) {
         {items.map((item, index) => (
           <motion.div
             key={item._id}
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.8, delay: index * 0.15, ease: "easeOut" }}
             whileHover={{ scale: 1.02 }}
             onClick={() => setSelectedItem(item)}
             className="portfolio-card group relative cursor-pointer rounded-none overflow-hidden bg-[#050505] border-2 border-[#222] hover:border-[#ff1a1a] transition-colors duration-300"

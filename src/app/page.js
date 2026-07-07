@@ -3,7 +3,7 @@ import PortfolioContent from "../components/PortfolioContent";
 
 export const revalidate = 0;
 
-const query = `*[_type == "portfolioItem"]{
+const portfolioQuery = `*[_type == "portfolioItem"]{
   _id,
   title,
   category,
@@ -20,8 +20,16 @@ const query = `*[_type == "portfolioItem"]{
   githubLink
 }`;
 
+const friendsQuery = `*[_type == "friend"]{
+  _id,
+  name,
+  discordId,
+  description
+}`;
+
 export default async function Home() {
-  const data = await client.fetch(query);
+  const data = await client.fetch(portfolioQuery);
+  const friendsData = await client.fetch(friendsQuery).catch(() => []);
 
   const graphics = data.filter((item) => item.category === "graphics");
   const videos = data.filter((item) => item.category === "video");
@@ -34,6 +42,7 @@ export default async function Home() {
       videos={videos}
       music={music}
       apps={apps}
+      friends={friendsData}
     />
   );
 }
