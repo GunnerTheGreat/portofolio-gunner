@@ -2,6 +2,7 @@
 
 import { useLanyardWS } from 'use-lanyard';
 import Image from 'next/image';
+import Link from 'next/link';
 import { getStatusTheme } from '../config/theme';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
@@ -45,75 +46,77 @@ export default function FriendCard({ friend }) {
 
   return (
     <>
-      <div 
-        className={`group relative flex flex-col p-4 rounded-xl border-2 ${c.border} ${c.bg} transition-colors duration-500 w-full overflow-hidden hover:border-[#ff1a1a]`} 
-        style={glassStyle}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onMouseMove={handleMouseMove}
-      >
-        
-        {nameplateUrl && (
-          <div className="absolute inset-0 z-0 pointer-events-none opacity-60 mix-blend-screen">
-            <img src={nameplateUrl} alt="Nameplate" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
-          </div>
-        )}
-
-        <div className="relative z-10 flex flex-col gap-3 h-full">
-          <div className="relative flex items-center gap-3 w-full p-2 rounded-lg border border-white/5 bg-black/10">
-            
-            <div className="relative z-10 shrink-0 w-12 h-12">
-              <div className="relative w-full h-full rounded-full overflow-hidden shadow-md border border-white/10">
-                {avatarUrl ? (
-                  <Image src={avatarUrl} alt="Discord Avatar" fill className="object-cover" />
-                ) : (
-                  <div className="w-full h-full bg-black/40 flex items-center justify-center text-xs text-white/50">?</div>
-                )}
-              </div>
-              {avatarDecorationUrl && (
-                <div className="absolute -inset-[18%] z-20 pointer-events-none">
-                  <img 
-                    src={avatarDecorationUrl} 
-                    alt="Avatar Decoration" 
-                    className="w-full h-full object-contain" 
-                  />
-                </div>
-              )}
-            </div>
-            
-            <div className="relative z-10 flex flex-col overflow-hidden min-w-0 flex-1">
-              <span className={`text-sm font-bold truncate ${c.textPrimary}`}>{displayName}</span>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <div className={`relative flex items-center justify-center shrink-0`}>
-                  <div className={`absolute w-2.5 h-2.5 rounded-full ${statusColor} ${status?.discord_status !== 'offline' ? 'animate-ping' : ''} opacity-75`} />
-                  <div className={`relative w-2.5 h-2.5 rounded-full ${statusColor}`} />
-                </div>
-                <span className={`text-[10px] font-bold uppercase tracking-wider ${c.textSecondary} truncate`}>
-                  {statusText}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {(customStatus && customStatus.state) && (
-            <div className="flex flex-col gap-1.5 px-1 mt-1">
-              <div className={`text-sm italic ${c.textSecondary} flex items-center gap-1.5`}>
-                {customStatus.emoji && customStatus.emoji.id ? (
-                  <img
-                    src={`https://cdn.discordapp.com/emojis/${customStatus.emoji.id}.${customStatus.emoji.animated ? 'gif' : 'png'}`}
-                    alt="emoji"
-                    className="w-4 h-4 object-contain"
-                  />
-                ) : customStatus.emoji && customStatus.emoji.name ? (
-                  <span>{customStatus.emoji.name}</span>
-                ) : null}
-                <span className="truncate">{customStatus.state}</span>
-              </div>
+      <Link href={`/connections/${friend.discordId || friend._id}`} className="block w-full">
+        <div 
+          className={`group relative flex flex-col p-4 rounded-xl border-2 ${c.border} ${c.bg} transition-colors duration-500 w-full overflow-hidden hover:border-[#ff1a1a] cursor-pointer`} 
+          style={glassStyle}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onMouseMove={handleMouseMove}
+        >
+          
+          {nameplateUrl && (
+            <div className="absolute inset-0 z-0 pointer-events-none opacity-60 mix-blend-screen">
+              <img src={nameplateUrl} alt="Nameplate" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
             </div>
           )}
+
+          <div className="relative z-10 flex flex-col gap-3 h-full">
+            <div className="relative flex items-center gap-3 w-full p-2 rounded-lg border border-white/5 bg-black/10">
+              
+              <div className="relative z-10 shrink-0 w-12 h-12">
+                <div className="relative w-full h-full rounded-full overflow-hidden shadow-md border border-white/10">
+                  {avatarUrl ? (
+                    <Image src={avatarUrl} alt="Discord Avatar" fill className="object-cover" />
+                  ) : (
+                    <div className="w-full h-full bg-black/40 flex items-center justify-center text-xs text-white/50">?</div>
+                  )}
+                </div>
+                {avatarDecorationUrl && (
+                  <div className="absolute -inset-[18%] z-20 pointer-events-none">
+                    <img 
+                      src={avatarDecorationUrl} 
+                      alt="Avatar Decoration" 
+                      className="w-full h-full object-contain" 
+                    />
+                  </div>
+                )}
+              </div>
+              
+              <div className="relative z-10 flex flex-col overflow-hidden min-w-0 flex-1">
+                <span className={`text-sm font-bold truncate ${c.textPrimary}`}>{displayName}</span>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <div className={`relative flex items-center justify-center shrink-0`}>
+                    <div className={`absolute w-2.5 h-2.5 rounded-full ${statusColor} ${status?.discord_status !== 'offline' ? 'animate-ping' : ''} opacity-75`} />
+                    <div className={`relative w-2.5 h-2.5 rounded-full ${statusColor}`} />
+                  </div>
+                  <span className={`text-[10px] font-bold uppercase tracking-wider ${c.textSecondary} truncate`}>
+                    {statusText}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {(customStatus && customStatus.state) && (
+              <div className="flex flex-col gap-1.5 px-1 mt-1">
+                <div className={`text-sm italic ${c.textSecondary} flex items-center gap-1.5`}>
+                  {customStatus.emoji && customStatus.emoji.id ? (
+                    <img
+                      src={`https://cdn.discordapp.com/emojis/${customStatus.emoji.id}.${customStatus.emoji.animated ? 'gif' : 'png'}`}
+                      alt="emoji"
+                      className="w-4 h-4 object-contain"
+                    />
+                  ) : customStatus.emoji && customStatus.emoji.name ? (
+                    <span>{customStatus.emoji.name}</span>
+                  ) : null}
+                  <span className="truncate">{customStatus.state}</span>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </Link>
 
       {mounted && isHovered && friend.description && createPortal(
         <div 
