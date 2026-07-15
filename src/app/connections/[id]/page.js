@@ -3,6 +3,7 @@ import FriendCard from "@/components/FriendCard";
 import Link from "next/link";
 import { ArrowLeft, Play, Pause, Volume2, Monitor } from "lucide-react";
 import { portfolioTheme } from "@/config/theme";
+import { FaXTwitter, FaGithub, FaInstagram, FaFacebook, FaTiktok, FaGlobe } from "react-icons/fa6";
 
 import AudioPlayer from "@/components/AudioPlayer";
 
@@ -113,32 +114,32 @@ export default async function ConnectionPage({ params }) {
             <div className="flex flex-wrap gap-4 justify-center">
               {friend.twitterUrl && (
                 <a href={friend.twitterUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-[#1DA1F2] hover:border-[#1DA1F2] hover:bg-white/5 transition-all">
-                  <span className="text-[10px]">TW</span>
+                  <FaXTwitter size={16} />
                 </a>
               )}
               {friend.githubUrl && (
                 <a href={friend.githubUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-white hover:border-white hover:bg-white/5 transition-all">
-                  <span className="text-[10px]">GH</span>
+                  <FaGithub size={16} />
                 </a>
               )}
               {friend.instagramUrl && (
                 <a href={friend.instagramUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-[#E1306C] hover:border-[#E1306C] hover:bg-white/5 transition-all">
-                  <span className="text-[10px]">IG</span>
+                  <FaInstagram size={18} />
                 </a>
               )}
               {friend.facebookUrl && (
                 <a href={friend.facebookUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-[#1877F2] hover:border-[#1877F2] hover:bg-white/5 transition-all">
-                  <span className="text-[10px]">FB</span>
+                  <FaFacebook size={16} />
                 </a>
               )}
               {friend.tiktokUrl && (
                 <a href={friend.tiktokUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-[#ff0050] hover:border-[#ff0050] hover:bg-white/5 transition-all">
-                  <span className="text-[10px]">TT</span>
+                  <FaTiktok size={16} />
                 </a>
               )}
               {friend.websiteUrl && (
                 <a href={friend.websiteUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-[#00ffcc] hover:border-[#00ffcc] hover:bg-white/5 transition-all">
-                  <span className="text-[10px]">WEB</span>
+                  <FaGlobe size={16} />
                 </a>
               )}
             </div>
