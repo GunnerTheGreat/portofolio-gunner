@@ -4,6 +4,8 @@ import Link from "next/link";
 import { ArrowLeft, Play, Pause, Volume2, Monitor } from "lucide-react";
 import { portfolioTheme } from "@/config/theme";
 
+import AudioPlayer from "@/components/AudioPlayer";
+
 export const revalidate = 0;
 
 export default async function ConnectionPage({ params }) {
@@ -14,7 +16,7 @@ export default async function ConnectionPage({ params }) {
     name,
     discordId,
     description,
-    backgroundVideoUrl,
+    "backgroundVideoUrl": backgroundVideoFile.asset->url,
     "audioUrl": audioFile.asset->url,
     audioTitle,
     audioArtist,
@@ -118,7 +120,7 @@ export default async function ConnectionPage({ params }) {
               </div>
             </div>
             <Volume2 size={16} className="text-white/40" />
-            <audio src={friend.audioUrl} autoPlay loop style={{ display: 'none' }} />
+            <AudioPlayer url={friend.audioUrl} />
           </div>
         )}
 

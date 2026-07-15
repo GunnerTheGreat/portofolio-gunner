@@ -111,6 +111,13 @@ export default function PortfolioContent({ graphics, videos, music, apps, friend
   }, { scope: container, dependencies: [isLoading, isLocked, showAbout, graphics, videos, music, apps] });
 
   useEffect(() => {
+    if (sessionStorage.getItem('skipIntro') === 'true') {
+      setIsLoading(false);
+      setStartMusic(true);
+    }
+  }, []);
+
+  useEffect(() => {
     const timer = setTimeout(() => setShowEnter(true), 2500);
     return () => clearTimeout(timer);
   }, []);
@@ -118,6 +125,7 @@ export default function PortfolioContent({ graphics, videos, music, apps, friend
   const handleEnterSite = () => {
     setIsLoading(false);
     setStartMusic(true);
+    sessionStorage.setItem('skipIntro', 'true');
   };
 
   useEffect(() => {

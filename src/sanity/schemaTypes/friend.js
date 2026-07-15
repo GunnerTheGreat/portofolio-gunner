@@ -21,9 +21,12 @@ export default {
       description: 'A little description that shows when you hover over them! hahaha',
     },
     {
-      name: 'backgroundVideoUrl',
-      title: 'Background Video URL (MP4)',
-      type: 'url',
+      name: 'backgroundVideoFile',
+      title: 'Background Video File (Upload MP4)',
+      type: 'file',
+      options: {
+        accept: 'video/*',
+      },
     },
     {
       name: 'audioFile',
