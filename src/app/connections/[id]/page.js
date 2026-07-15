@@ -52,9 +52,8 @@ export default async function ConnectionPage({ params }) {
       if (res.ok) {
         const data = await res.json();
         coverArtUrl = data.thumbnail_url;
-        const titleParts = data.title.split(' - ');
-        audioTitle = titleParts[0] || audioTitle;
-        audioArtist = titleParts[1] || "Spotify Track";
+        audioTitle = data.title || audioTitle;
+        audioArtist = data.author_name || friend.audioArtist || "Unknown Artist";
       }
     } catch (e) {
       console.error("Failed to fetch Spotify oEmbed data");
