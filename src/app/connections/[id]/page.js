@@ -22,7 +22,11 @@ export default async function ConnectionPage({ params }) {
     audioArtist,
     twitterUrl,
     githubUrl,
-    websiteUrl
+    websiteUrl,
+    instagramUrl,
+    facebookUrl,
+    tiktokUrl,
+    spotifyUrl
   }`;
 
   const friend = await client.fetch(query, { id }).catch(() => null);
@@ -36,6 +40,25 @@ export default async function ConnectionPage({ params }) {
         </Link>
       </div>
     );
+  }
+
+  let audioTitle = friend.audioTitle || "Unknown Track";
+  let audioArtist = friend.audioArtist || "Unknown Artist";
+  let coverArtUrl = null;
+
+  if (friend.spotifyUrl) {
+    try {
+      const res = await fetch(`https://open.spotify.com/oembed?url=${friend.spotifyUrl}`);
+      if (res.ok) {
+        const data = await res.json();
+        coverArtUrl = data.thumbnail_url;
+        const titleParts = data.title.split(' - ');
+        audioTitle = titleParts[0] || audioTitle;
+        audioArtist = titleParts[1] || "Spotify Track";
+      }
+    } catch (e) {
+      console.error("Failed to fetch Spotify oEmbed data");
+    }
   }
 
   const c = portfolioTheme;
@@ -83,12 +106,12 @@ export default async function ConnectionPage({ params }) {
           <FriendCard friend={friend} />
         </div>
 
-        {(friend.twitterUrl || friend.githubUrl || friend.websiteUrl) ? (
+        {(friend.twitterUrl || friend.githubUrl || friend.websiteUrl || friend.instagramUrl || friend.facebookUrl || friend.tiktokUrl) ? (
           <div className="w-full p-4 border border-white/10 bg-black/40 backdrop-blur-md rounded-xl">
             <div className="text-xs text-white/50 mb-3 tracking-widest uppercase">
               /// SOCIAL_LINKS.LNK
             </div>
-            <div className="flex gap-4 justify-center">
+            <div className="flex flex-wrap gap-4 justify-center">
               {friend.twitterUrl && (
                 <a href={friend.twitterUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-[#1DA1F2] hover:border-[#1DA1F2] hover:bg-white/5 transition-all">
                   <span className="text-[10px]">TW</span>
@@ -97,6 +120,21 @@ export default async function ConnectionPage({ params }) {
               {friend.githubUrl && (
                 <a href={friend.githubUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-white hover:border-white hover:bg-white/5 transition-all">
                   <span className="text-[10px]">GH</span>
+                </a>
+              )}
+              {friend.instagramUrl && (
+                <a href={friend.instagramUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-[#E1306C] hover:border-[#E1306C] hover:bg-white/5 transition-all">
+                  <span className="text-[10px]">IG</span>
+                </a>
+              )}
+              {friend.facebookUrl && (
+                <a href={friend.facebookUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-[#1877F2] hover:border-[#1877F2] hover:bg-white/5 transition-all">
+                  <span className="text-[10px]">FB</span>
+                </a>
+              )}
+              {friend.tiktokUrl && (
+                <a href={friend.tiktokUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/40 hover:text-[#ff0050] hover:border-[#ff0050] hover:bg-white/5 transition-all">
+                  <span className="text-[10px]">TT</span>
                 </a>
               )}
               {friend.websiteUrl && (
@@ -111,15 +149,19 @@ export default async function ConnectionPage({ params }) {
         {friend.audioUrl && (
           <div className="w-full p-4 border border-white/10 bg-black/40 backdrop-blur-md rounded-xl flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#ff1a1a]/20 text-[#ff1a1a] flex items-center justify-center">
-                <Play size={18} className="ml-1" />
-              </div>
-              <div>
-                <div className="text-xs text-white/80 font-bold">{friend.audioTitle || "Unknown Track"}</div>
-                <div className="text-[10px] text-white/40">{friend.audioArtist || "Unknown Artist"}</div>
+              {coverArtUrl ? (
+                <img src={coverArtUrl} alt={audioTitle} className="w-12 h-12 rounded-md object-cover border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.1)]" />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-[#ff1a1a]/20 text-[#ff1a1a] flex items-center justify-center">
+                  <Play size={18} className="ml-1" />
+                </div>
+              )}
+              <div className="ml-2">
+                <div className="text-xs text-white/80 font-bold max-w-[180px] truncate">{audioTitle}</div>
+                <div className="text-[10px] text-white/40 truncate">{audioArtist}</div>
               </div>
             </div>
-            <Volume2 size={16} className="text-white/40" />
+            <Volume2 size={16} className="text-white/40 flex-shrink-0" />
             <AudioPlayer url={friend.audioUrl} />
           </div>
         )}

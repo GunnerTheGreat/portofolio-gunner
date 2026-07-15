@@ -44,6 +44,12 @@ export default {
       type: 'string',
     },
     {
+      name: 'spotifyUrl',
+      title: 'Spotify Track URL',
+      type: 'url',
+      description: 'Optional: Paste a Spotify track link here to automatically grab the cover art and title!',
+    },
+    {
       name: 'twitterUrl',
       title: 'Twitter/X URL',
       type: 'url',
@@ -56,6 +62,21 @@ export default {
     {
       name: 'websiteUrl',
       title: 'Personal Website URL',
+      type: 'url',
+    },
+    {
+      name: 'instagramUrl',
+      title: 'Instagram URL',
+      type: 'url',
+    },
+    {
+      name: 'facebookUrl',
+      title: 'Facebook URL',
+      type: 'url',
+    },
+    {
+      name: 'tiktokUrl',
+      title: 'TikTok URL',
       type: 'url',
     },
   ],
