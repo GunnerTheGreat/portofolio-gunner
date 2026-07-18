@@ -6,9 +6,6 @@ export default function AudioPlayer({ url }) {
   const audioRef = useRef(null);
 
   useEffect(() => {
-    // In React 18+ strict mode, components mount, unmount, and remount.
-    // This can cause audio to play twice if we just use autoPlay prop.
-    // We manually handle play here to prevent echoing.
     if (audioRef.current) {
       audioRef.current.play().catch(e => console.log("Auto-play prevented", e));
     }

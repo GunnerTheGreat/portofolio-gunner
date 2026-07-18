@@ -9,14 +9,11 @@ import { portfolioTheme as c } from '../config/theme';
 export default function HeroSection({ isLoading, setShowConsole, handleGetStarted, showBgVideo }) {
   return (
     <section id="hero-section" className="relative h-screen flex flex-col justify-center items-center text-center px-4 overflow-hidden">
-      {!showBgVideo && <WavesCursor />}
       {!isLoading && !showBgVideo && <AnimeBackground />}
 
       <div className={`absolute inset-0 ${showBgVideo ? 'bg-transparent' : c.heroOverlay} pointer-events-none transition-colors duration-1000`} />
 
-      {/* 3D VHS Ambient Text with Static Glitch Effect */}
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-20 overflow-hidden">
-        {/* Top Left Text with Fisheye Distortion */}
         <div className="absolute top-10 left-10" style={{ transform: 'perspective(300px) rotateX(15deg) rotateY(15deg)', transformOrigin: 'top left' }}>
           <div className="font-mono text-sm tracking-widest text-[#e0e0e0] mix-blend-screen opacity-80 whitespace-pre vhs-text-glitch" style={{ textShadow: '2px 0 1px rgba(255,0,0,0.8), -2px 0 1px rgba(0,255,255,0.8)' }}>
             SYS_INIT // SUCCESS<br/>
@@ -25,7 +22,6 @@ export default function HeroSection({ isLoading, setShowConsole, handleGetStarte
           </div>
         </div>
         
-        {/* Bottom Right Text with Fisheye Distortion */}
         <div className="absolute bottom-10 right-10" style={{ transform: 'perspective(300px) rotateX(-15deg) rotateY(-15deg)', transformOrigin: 'bottom right' }}>
           <div className="text-right font-mono text-sm tracking-widest text-[#e0e0e0] mix-blend-screen opacity-80 whitespace-pre vhs-text-glitch-alt" style={{ textShadow: '2px 0 1px rgba(255,0,0,0.8), -2px 0 1px rgba(0,255,255,0.8)' }}>
             0x000000 // CORE<br/>

@@ -167,7 +167,6 @@ export default function ConsoleModal({ onClose, onAbout }) {
 
         <div className="flex-1 overflow-y-auto p-4 md:p-6 font-mono text-sm md:text-base relative">
           
-          {/* Futuristic Ambient ASCII Shader */}
           <div className="absolute right-4 bottom-4 md:right-8 md:bottom-8 pointer-events-none flex flex-col items-end z-0">
              <DedsecAnimation />
           </div>

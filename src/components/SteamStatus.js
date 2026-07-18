@@ -39,7 +39,6 @@ export default function SteamStatus() {
     }
     fetchSteam();
 
-
     const interval = setInterval(fetchSteam, 60000);
     return () => clearInterval(interval);
   }, []);
@@ -56,6 +55,18 @@ export default function SteamStatus() {
   }
 
   if (error || !data) {
+    const isRateLimited = error && (error.toLowerCase().includes('failed') || error.includes('429') || error.includes('fetch'));
+    if (isRateLimited) {
+      return (
+        <div className={`flex items-center gap-3 p-3 rounded-xl border-2 ${c.border} ${c.bg}`} style={glassStyle}>
+          <div className="w-4 h-4 rounded-full border-2 border-blue-500 border-t-transparent animate-spin" />
+          <div className="flex flex-col">
+            <span className={`text-sm font-semibold text-blue-500`}>API Refreshing...</span>
+            <span className={`text-xs ${c.textSecondary} opacity-70`}>Please wait a few minutes (Rate Limit Active)</span>
+          </div>
+        </div>
+      );
+    }
     return (
       <div className={`flex flex-col gap-1 p-3 rounded-xl border-2 ${c.border} ${c.bg}`} style={glassStyle}>
         <span className={`text-sm font-semibold ${c.textSecondary}`}>Steam Integration Setup Required</span>
@@ -65,7 +76,6 @@ export default function SteamStatus() {
   }
 
   const { profile, recentGames } = data;
-
 
   let statusClasses = 'border-gray-500 bg-gray-500';
   if (profile.statusColor === 'blue') statusClasses = 'border-blue-400 bg-blue-400';

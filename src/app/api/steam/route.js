@@ -88,9 +88,6 @@ export async function GET() {
     const playerLevel = badgesData?.response?.player_level || 0;
     const badges = badgesData?.response?.badges || [];
 
-    // Filter to top 4 badges to display (or standard ones)
-    // Actually we'll just pass a few static visual badges from Steam if they don't have good ones, 
-    // but let's pass the real level.
     const displayBadges = [
       { id: 1, url: 'https://steamcommunity-a.akamaihd.net/public/images/badges/02_years/steamyears8_54.png', name: '8 Years of Service' },
       { id: 2, icon: 'shield', color: 'text-blue-400', name: 'Community Ambassador' },

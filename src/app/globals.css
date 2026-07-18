@@ -416,3 +416,27 @@ button,
   /* A subtle constant fisheye curve */
   transform: perspective(1500px) rotateX(0.5deg) scale(0.995);
 }
+
+/* Valorant Match Row Hover Effects */
+.match-row-wrapper .match-bg {
+  opacity: 0.4;
+  filter: grayscale(100%);
+  transition: all 0.5s ease;
+}
+.match-row-wrapper:hover .match-bg {
+  opacity: 1;
+  filter: grayscale(0%);
+}
+.match-row-wrapper .match-bg img {
+  transition: transform 0.5s ease;
+}
+.match-row-wrapper:hover .match-bg img {
+  transform: scale(1.1);
+}
+.match-row-wrapper .match-gradient {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+.match-row-wrapper:hover .match-gradient {
+  opacity: 0.3;
+}

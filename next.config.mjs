@@ -29,6 +29,22 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'cdn.discordapp.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images-eds-ssl.xboxlive.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'store-images.s-microsoft.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'store-images.s-microsoft.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'media.valorant-api.com',
       }
     ],
   },

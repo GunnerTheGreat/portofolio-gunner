@@ -16,7 +16,7 @@ export default function VideoCard({ title, src, thumbnail }) {
       <div className="relative w-full aspect-video bg-[#0a0a0a]">
         {videoId ? (
           <iframe
-            className="w-full h-full grayscale-[50%] group-hover:grayscale-0 transition-all duration-700"
+            className="w-full h-full transition-all duration-700 transform-gpu"
             src={`https://www.youtube.com/embed/${videoId}`}
             title={title}
             frameBorder="0"
@@ -28,7 +28,7 @@ export default function VideoCard({ title, src, thumbnail }) {
             controls
             controlsList="nodownload"
             poster={thumbnail}
-            className="w-full h-full object-cover grayscale-[50%] group-hover:grayscale-0 transition-all duration-700"
+            className="w-full h-full object-cover transition-all duration-700 transform-gpu"
             onContextMenu={(e) => e.preventDefault()}
           >
             <source src={src} type="video/mp4" />

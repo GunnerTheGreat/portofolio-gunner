@@ -22,7 +22,7 @@ export default function AudioCard({ title, src, coverArt, type = "file" }) {
           allowFullScreen=""
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
           loading="lazy"
-          className="grayscale-[50%] group-hover:grayscale-0 transition-all duration-700"
+          className="transition-all duration-700 transform-gpu"
         />
       </div>
     );
@@ -39,7 +39,7 @@ export default function AudioCard({ title, src, coverArt, type = "file" }) {
           frameBorder="0"
           allow="autoplay"
           src={src}
-          className="grayscale-[50%] group-hover:grayscale-0 transition-all duration-700"
+          className="transition-all duration-700 transform-gpu"
         />
       </div>
     );
@@ -53,7 +53,7 @@ export default function AudioCard({ title, src, coverArt, type = "file" }) {
         <img
           src={coverArt || "/default-music-cover.jpg"}
           alt={title}
-          className="w-full h-full object-cover pointer-events-none select-none grayscale-[50%] group-hover:grayscale-0 transition-all duration-700"
+          className="w-full h-full object-cover pointer-events-none select-none transition-all duration-700 transform-gpu"
           onContextMenu={(e) => e.preventDefault()}
         />
       </div>

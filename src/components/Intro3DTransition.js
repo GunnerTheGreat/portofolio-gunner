@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Float, Stars, useProgress } from '@react-three/drei';
 import * as THREE from 'three';
@@ -27,7 +27,55 @@ const ASCII_ART = `
  \\____|\\___/|_| \\_|_| \\_|_____|_| \\_\\
 `;
 
-const LoadingScene = () => {
+const AnimatedShape = ({ index, activeCount }) => {
+  const meshRef = useRef();
+  
+  const { position, size, isWireframe, emissiveIntensity } = useMemo(() => ({
+    position: [
+      (Math.random() - 0.5) * 40,
+      (Math.random() - 0.5) * 40,
+      (Math.random() - 0.5) * 40 - 10
+    ],
+    size: Math.random() * 1.5 + 0.2,
+    isWireframe: Math.random() > 0.7,
+    emissiveIntensity: Math.random() * 0.8
+  }), []);
+
+  useFrame((state, delta) => {
+    if (!meshRef.current) return;
+    
+    const targetScale = index < activeCount ? 1 : 0;
+    meshRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.05);
+    
+    if (index < activeCount && meshRef.current.scale.x < 0.9) {
+      meshRef.current.rotation.x += delta * 5;
+      meshRef.current.rotation.y += delta * 5;
+    }
+  });
+
+  return (
+    <Float
+      speed={1.5}
+      rotationIntensity={2}
+      floatIntensity={1}
+      position={position}
+    >
+      <mesh ref={meshRef} scale={0}>
+        <octahedronGeometry args={[size, 0]} />
+        <meshStandardMaterial 
+          color="#111" 
+          emissive="#ff1a1a" 
+          emissiveIntensity={emissiveIntensity} 
+          wireframe={isWireframe} 
+        />
+      </mesh>
+    </Float>
+  );
+};
+
+const MAX_SHAPES = 50;
+
+const LoadingScene = ({ activeCount }) => {
   const group = useRef();
   
   useFrame((state) => {
@@ -37,33 +85,13 @@ const LoadingScene = () => {
 
   return (
     <group ref={group}>
-      <fog attach="fog" args={['#000', 5, 30]} />
+      <fog attach="fog" args={['#000', 5, 40]} />
       <ambientLight intensity={0.1} />
       <pointLight position={[0, 0, 0]} color="#ff1a1a" intensity={8} distance={30} />
       <pointLight position={[5, 5, 5]} color="#4a0000" intensity={3} />
 
-      {Array.from({ length: 20 }).map((_, i) => (
-        <Float
-          key={i}
-          speed={1.5}
-          rotationIntensity={2}
-          floatIntensity={1}
-          position={[
-            (Math.random() - 0.5) * 30,
-            (Math.random() - 0.5) * 30,
-            (Math.random() - 0.5) * 30 - 10
-          ]}
-        >
-          <mesh>
-            <octahedronGeometry args={[Math.random() * 0.8 + 0.2, 0]} />
-            <meshStandardMaterial 
-              color="#111" 
-              emissive="#ff1a1a" 
-              emissiveIntensity={Math.random() * 0.8} 
-              wireframe={Math.random() > 0.7} 
-            />
-          </mesh>
-        </Float>
+      {Array.from({ length: MAX_SHAPES }).map((_, i) => (
+        <AnimatedShape key={i} index={i} activeCount={activeCount} />
       ))}
       <Stars radius={50} depth={20} count={800} factor={3} saturation={0} fade speed={1.5} />
     </group>
@@ -193,8 +221,8 @@ export default function Intro3DTransition({ onEnterSite }) {
       transition={{ duration: 1, ease: 'easeInOut' }}
       className="fixed inset-0 z-[100]" 
     >
-      <Canvas camera={{ position: [0, 0, 10], fov: 60 }}>
-        <LoadingScene />
+      <Canvas camera={{ position: [0, 0, 20], fov: 60 }}>
+        <LoadingScene activeCount={Math.floor((visibleLines.length * 2.5) + (commandInput.length * 2))} />
         <CameraController 
           isTransitioning={isTransitioning} 
           onTransitionComplete={handleTransitionComplete} 

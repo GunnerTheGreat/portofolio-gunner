@@ -151,7 +151,7 @@ export default function WavesCursor() {
             strokeOpacity={0.25}
             className="transition-colors duration-500"
             style={{
-              filter: isGoth ? `drop-shadow(0 0 8px ${currentColors.color1})` : 'none'
+              willChange: 'cx, cy'
             }}
           />
         ))}

@@ -44,9 +44,6 @@ export default function AnimeBackground() {
 
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-hidden z-0 bg-transparent">
-
-      <div className="absolute inset-0 backdrop-blur-[120px] z-10 pointer-events-none" />
-      
       {orbColors.map((color, i) => (
         <div
           key={i}
@@ -57,6 +54,8 @@ export default function AnimeBackground() {
             minHeight: '300px',
             filter: 'blur(100px)',
             mixBlendMode: isGoth ? 'normal' : 'multiply',
+            willChange: 'transform',
+            transform: 'translateZ(0)',
           }}
         />
       ))}

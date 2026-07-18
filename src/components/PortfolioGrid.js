@@ -46,7 +46,7 @@ export default function PortfolioGrid({ items, isApp = false }) {
                 <img
                   src={item.imageUrl}
                   alt={item.title}
-                  className="w-full h-full object-cover transition duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100 grayscale-[50%] group-hover:grayscale-0"
+                  className="w-full h-full object-cover transition duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100 grayscale-[50%] group-hover:grayscale-0 transform-gpu"
                 />
               ) : (
                <div className="w-full h-full flex items-center justify-center text-[#555] font-mono text-xs uppercase tracking-widest">[ NO_IMAGE_DATA ]</div>
