@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export const revalidate = 900; // Cache for 15 minutes to avoid rate limits
+export const revalidate = 900;
 
 export async function GET() {
   const XBL_API_KEY = process.env.XBL_API_KEY;
@@ -28,7 +28,11 @@ export async function GET() {
     }
 
     const profileData = await profileRes.json();
-    const user = profileData.content?.profileUsers?.[0] || profileData.profileUsers?.[0];
+
+    const user = profileData.content?.profileUsers?.[0]
+      || profileData.profileUsers?.[0]
+      || profileData.people?.[0]
+      || (profileData.xuid ? profileData : null);
 
     if (!user) {
       return NextResponse.json({ error: 'Xbox User not found' }, { status: 404 });
@@ -87,7 +91,7 @@ export async function GET() {
             lastUnlock: title.achievement?.currentAchievements > 0 ? true : false,
             earnedAchievements: title.achievement?.currentAchievements || 0,
             totalAchievements: title.achievement?.totalAchievements || 0,
-            playtime: 0 // Optional: can be parsed from history if available
+            playtime: 0
           }));
         }
       }
