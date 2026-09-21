@@ -10,7 +10,7 @@ import XboxStatus from './XboxStatus';
 import ValorantStatus from './ValorantStatus';
 
 export default function GamingCard() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const myGames = ["Valorant", "Apex Legends", "Genshin Impact", "League of Legends"];
 
@@ -57,9 +57,10 @@ export default function GamingCard() {
           </button>
         </div>
 
-        <AnimatePresence initial={false}>
-          {isOpen && (
+        <AnimatePresence initial={false} mode="wait">
+          {isOpen ? (
             <motion.div
+              key="expanded"
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
@@ -112,6 +113,17 @@ export default function GamingCard() {
                 </div>
 
               </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="collapsed"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="overflow-hidden mt-4"
+            >
+              <LiveStatus compact={true} />
             </motion.div>
           )}
         </AnimatePresence>

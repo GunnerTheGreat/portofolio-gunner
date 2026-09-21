@@ -8,7 +8,7 @@ import { getStatusTheme } from '../config/theme';
 
 const DISCORD_ID = "653802183795408917";
 
-export default function LiveStatus() {
+export default function LiveStatus({ compact = false }) {
   const theme = 'goth';
   const { c, glassStyle, glassIconBgStyle, isGoth, isGlass } = getStatusTheme(theme);
   const status = useLanyardWS(DISCORD_ID);
@@ -104,9 +104,11 @@ export default function LiveStatus() {
           </div>
         )}
 
-        <div className={`w-full h-[1px] bg-gradient-to-r from-transparent ${c.divider} to-transparent`} />
+        {!compact && (
+          <>
+            <div className={`w-full h-[1px] bg-gradient-to-r from-transparent ${c.divider} to-transparent`} />
 
-        <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3">
 
         {(!spotify && activities.length === 0) && (
           <div className={`text-xs italic ${c.textSecondary}`}>
@@ -170,9 +172,10 @@ export default function LiveStatus() {
             </div>
           );
         })}
-      </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
 }
-
