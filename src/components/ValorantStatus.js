@@ -93,11 +93,11 @@ export default function ValorantStatus() {
           
           <div className="flex flex-col overflow-hidden min-w-0">
             <div className="flex items-center gap-2">
-              <span className={`text-sm font-bold truncate ${c.textPrimary}`}>{account.name}</span>
-              <span className={`text-xs font-mono text-[#ff4655]`}>#{account.tag}</span>
+              <span className={`text-sm font-bold truncate ${c.textPrimary}`}>{account?.name || 'Unknown Player'}</span>
+              <span className={`text-xs font-mono text-[#ff4655]`}>#{account?.tag || '0000'}</span>
             </div>
             <span className={`text-xs truncate ${c.textSecondary} font-semibold`}>
-              Level {account.account_level}
+              Level {account?.account_level || 0}
             </span>
           </div>
         </div>
