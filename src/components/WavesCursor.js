@@ -4,10 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 
 export default function WavesCursor() {
-  const theme = 'goth';
-  const isGoth = theme === 'goth';
-  const isGlass = theme === 'glass';
-  const isCute = theme === 'cute';
+
 
   const svgRef = useRef(null);
   const particlesRef = useRef([]);
@@ -19,15 +16,8 @@ export default function WavesCursor() {
   const points = useRef([]);
 
   const [radiusStart, setRadiusStart] = useState(250);
-  const nbrParticles = isGoth ? 25 : 50;
-
-  const colors = {
-    glass: { color1: '#88c0ff', color2: '#5b9bd5' },
-    goth: { color1: '#ff1a1a', color2: '#4a0000' },
-    cute: { color1: '#f5b4c8', color2: '#f0a0b4' }
-  };
-
-  const currentColors = colors[theme] || colors.cute;
+  const nbrParticles = 25;
+  const currentColors = { color1: '#ff1a1a', color2: '#4a0000' };
   const gradientId = "waves-gradient";
 
   useEffect(() => {
@@ -39,7 +29,7 @@ export default function WavesCursor() {
 
     const updateRadius = () => {
       const diag = Math.sqrt(Math.pow(window.innerWidth, 2) + Math.pow(window.innerHeight, 2));
-      setRadiusStart(isGoth ? 60 : diag / 5);
+      setRadiusStart(60);
     };
 
     updateRadius();
@@ -110,7 +100,7 @@ export default function WavesCursor() {
   const radiusDiff = radiusStart / nbrParticles;
   const getRadius = (i) => Math.max(0, radiusStart - (i * radiusDiff));
 
-  if (isCute) return null;
+
 
   return (
     <svg
@@ -119,8 +109,8 @@ export default function WavesCursor() {
       style={{
         width: '100%',
         height: '100%',
-        opacity: isGlass ? 0.3 : isGoth ? 0.6 : 0.35,
-        mixBlendMode: isGoth ? 'normal' : 'screen'
+        opacity: 0.6,
+        mixBlendMode: 'normal'
       }}
     >
       <defs>
@@ -128,16 +118,14 @@ export default function WavesCursor() {
           <stop offset="0%" stopColor={currentColors.color1} />
           <stop offset="100%" stopColor={currentColors.color2} />
         </linearGradient>
-        {isGoth && (
-          <filter id="goo">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
-            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
-            <feBlend in="SourceGraphic" in2="goo" />
-          </filter>
-        )}
+        <filter id="goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+          <feBlend in="SourceGraphic" in2="goo" />
+        </filter>
       </defs>
 
-      <g className="particles" filter={isGoth ? 'url(#goo)' : undefined}>
+          <g className="particles" filter="url(#goo)">
         {Array(nbrParticles).fill().map((_, i) => (
           <circle
             key={i}
@@ -145,9 +133,9 @@ export default function WavesCursor() {
             r={getRadius(i)}
             cx={-1000}
             cy={-1000}
-            fill={isGoth ? currentColors.color1 : "none"}
-            stroke={isGoth ? "none" : `url(#${gradientId})`}
-            strokeWidth={isGoth ? 0 : 1.5}
+            fill={currentColors.color1}
+            stroke="none"
+            strokeWidth={0}
             strokeOpacity={0.25}
             className="transition-colors duration-500"
             style={{

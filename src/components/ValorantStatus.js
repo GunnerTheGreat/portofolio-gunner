@@ -6,7 +6,7 @@ import { Target, Trophy, Swords, Medal, History } from 'lucide-react';
 import { getStatusTheme } from '../config/theme';
 
 export default function ValorantStatus() {
-  const theme = 'goth';
+
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,11 +33,11 @@ export default function ValorantStatus() {
     return () => clearInterval(interval);
   }, []);
 
-  const { c, glassStyle } = getStatusTheme(theme);
+  const { c } = getStatusTheme();
 
   if (isLoading) {
     return (
-      <div className={`flex items-center gap-2 p-3 rounded-xl border-2 ${c.border} ${c.bg}`} style={glassStyle}>
+      <div className={`flex items-center gap-2 p-3 rounded-xl border-2 ${c.border} ${c.bg}`}>
         <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
         <span className={`text-sm font-semibold ${c.textSecondary}`}>Connecting to Riot Games...</span>
       </div>
@@ -48,7 +48,7 @@ export default function ValorantStatus() {
     const isRateLimited = error && (error.toLowerCase().includes('failed') || error.includes('429') || error.includes('fetch'));
     if (isRateLimited) {
       return (
-        <div className={`flex items-center gap-3 p-3 rounded-xl border-2 ${c.border} ${c.bg}`} style={glassStyle}>
+        <div className={`flex items-center gap-3 p-3 rounded-xl border-2 ${c.border} ${c.bg}`}>
           <div className="w-4 h-4 rounded-full border-2 border-[#ff4655] border-t-transparent animate-spin" />
           <div className="flex flex-col">
             <span className={`text-sm font-semibold text-[#ff4655]`}>API Refreshing...</span>
@@ -58,7 +58,7 @@ export default function ValorantStatus() {
       );
     }
     return (
-      <div className={`flex flex-col gap-1 p-3 rounded-xl border-2 ${c.border} ${c.bg}`} style={glassStyle}>
+      <div className={`flex flex-col gap-1 p-3 rounded-xl border-2 ${c.border} ${c.bg}`}>
         <span className={`text-sm font-semibold ${c.textSecondary}`}>Valorant Integration Setup Required</span>
         <span className={`text-xs ${c.textSecondary} opacity-70`}>Waiting for VALORANT_API_KEY in .env.local...</span>
       </div>
@@ -70,7 +70,7 @@ export default function ValorantStatus() {
   const peak = mmr?.highest_rank;
 
   return (
-    <div className={`relative flex flex-col gap-4 p-4 rounded-xl border-2 border-[#ff4655]/20 bg-black/60 transition-colors duration-500 w-full overflow-hidden`} style={glassStyle}>
+    <div className={`relative flex flex-col gap-4 p-4 rounded-xl border-2 border-[#ff4655]/20 bg-black/60 transition-colors duration-500 w-full overflow-hidden`}>
 
       {account?.card?.wide && (
         <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.25]">

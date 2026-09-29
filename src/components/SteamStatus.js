@@ -16,7 +16,7 @@ const getBadgeIcon = (iconStr, color) => {
 };
 
 export default function SteamStatus() {
-  const theme = 'goth';
+
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -43,11 +43,11 @@ export default function SteamStatus() {
     return () => clearInterval(interval);
   }, []);
 
-  const { c, glassStyle, isGlass } = getStatusTheme(theme);
+  const { c } = getStatusTheme();
 
   if (isLoading) {
     return (
-      <div className={`flex items-center gap-2 p-3 rounded-xl border-2 ${c.border} ${c.bg}`} style={glassStyle}>
+      <div className={`flex items-center gap-2 p-3 rounded-xl border-2 ${c.border} ${c.bg}`}>
         <div className="w-3 h-3 rounded-full bg-blue-500 animate-pulse" />
         <span className={`text-sm font-semibold ${c.textSecondary}`}>Connecting to Steam...</span>
       </div>
@@ -58,7 +58,7 @@ export default function SteamStatus() {
     const isRateLimited = error && (error.toLowerCase().includes('failed') || error.includes('429') || error.includes('fetch'));
     if (isRateLimited) {
       return (
-        <div className={`flex items-center gap-3 p-3 rounded-xl border-2 ${c.border} ${c.bg}`} style={glassStyle}>
+        <div className={`flex items-center gap-3 p-3 rounded-xl border-2 ${c.border} ${c.bg}`}>
           <div className="w-4 h-4 rounded-full border-2 border-blue-500 border-t-transparent animate-spin" />
           <div className="flex flex-col">
             <span className={`text-sm font-semibold text-blue-500`}>API Refreshing...</span>
@@ -68,7 +68,7 @@ export default function SteamStatus() {
       );
     }
     return (
-      <div className={`flex flex-col gap-1 p-3 rounded-xl border-2 ${c.border} ${c.bg}`} style={glassStyle}>
+      <div className={`flex flex-col gap-1 p-3 rounded-xl border-2 ${c.border} ${c.bg}`}>
         <span className={`text-sm font-semibold ${c.textSecondary}`}>Steam Integration Setup Required</span>
         <span className={`text-xs ${c.textSecondary} opacity-70`}>Waiting for API keys in .env.local...</span>
       </div>
@@ -82,7 +82,7 @@ export default function SteamStatus() {
   if (profile.statusColor === 'green') statusClasses = 'border-green-400 bg-green-400';
 
   return (
-    <div className={`relative flex flex-col gap-4 p-4 rounded-xl border-2 ${c.border} ${c.bg} transition-colors duration-500 w-full overflow-hidden`} style={glassStyle}>
+    <div className={`relative flex flex-col gap-4 p-4 rounded-xl border-2 ${c.border} ${c.bg} transition-colors duration-500 w-full overflow-hidden`}>
 
       {(profile.miniprofileVideoUrl || profile.miniprofileBackgroundUrl) && (
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-xl">

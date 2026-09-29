@@ -42,7 +42,7 @@ export default function LiveStatus({ compact = false }) {
   const displayName = discordUser?.display_name || discordUser?.username || 'Discord User';
 
   return (
-    <div className={`relative flex flex-col p-4 rounded-xl border-2 ${c.border} ${c.bg} transition-colors duration-500 w-full overflow-hidden`} style={glassStyle}>
+    <div className={`relative flex flex-col p-4 rounded-xl border-2 ${c.border} ${c.bg} transition-colors duration-500 w-full overflow-hidden`}>
 
       {nameplateUrl && (
         <div className="absolute inset-0 z-0 pointer-events-none opacity-60 mix-blend-screen">
@@ -157,7 +157,7 @@ export default function LiveStatus({ compact = false }) {
                   </div>
                 </div>
               ) : (
-                <div className={`flex items-center justify-center shrink-0 w-12 h-12 rounded-md border-2 ${c.border} ${isGoth ? 'bg-[#0a0a0a]' : 'bg-[#111]'}`}>
+                <div className={`flex items-center justify-center shrink-0 w-12 h-12 rounded-md border-2 ${c.border} bg-[#0a0a0a]`}>
                   <Gamepad2 size={24} className={c.icon} />
                 </div>
               )}

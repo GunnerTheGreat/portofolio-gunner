@@ -6,9 +6,7 @@ import { Eye } from 'lucide-react';
 
 export default function VisitCounter() {
   const [views, setViews] = useState(null);
-  const theme = 'goth';
-  const isGoth = theme === 'goth';
-  const isGlass = theme === 'glass';
+
 
   useEffect(() => {
 
@@ -24,15 +22,9 @@ export default function VisitCounter() {
 
   if (views === null) return null;
 
-  const c = isGlass ? {
-    text: 'text-[rgba(230,237,243,0.7)]',
-    icon: 'text-[#88c0ff]'
-  } : isGoth ? {
+  const c = {
     text: 'text-[#666]',
     icon: 'text-[#444]'
-  } : {
-    text: 'text-[#d4839a]',
-    icon: 'text-[#f5b4c8]'
   };
 
   return (

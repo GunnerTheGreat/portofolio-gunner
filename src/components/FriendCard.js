@@ -8,8 +8,7 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 export default function FriendCard({ friend }) {
-  const theme = 'goth';
-  const { c, glassStyle } = getStatusTheme(theme);
+  const { c } = getStatusTheme();
   const status = useLanyardWS(friend.discordId);
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -48,8 +47,7 @@ export default function FriendCard({ friend }) {
     <>
       <Link href={`/connections/${friend.discordId || friend._id}`} className="block w-full">
         <div 
-          className={`group relative flex flex-col p-4 rounded-xl border-2 ${c.border} ${c.bg} transition-colors duration-500 w-full overflow-hidden hover:border-[#ff1a1a] cursor-pointer`} 
-          style={glassStyle}
+          className={`group relative flex flex-col p-4 rounded-xl border-2 ${c.border} ${c.bg} transition-colors duration-500 w-full overflow-hidden hover:border-[#ff1a1a] cursor-pointer`}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           onMouseMove={handleMouseMove}
