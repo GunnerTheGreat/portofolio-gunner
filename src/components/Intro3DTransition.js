@@ -152,14 +152,14 @@ export default function Intro3DTransition({ onEnterSite }) {
         setVisibleLines(prev => [...prev, lineToAdd]);
         currentLine++;
         
-        const nextDelay = Math.random() * 400 + 300; 
+        const nextDelay = Math.random() * 80 + 40; 
         timeoutId = setTimeout(printNextLine, nextDelay);
       } else {
         setBootFinished(true);
       }
     };
     
-    timeoutId = setTimeout(printNextLine, 300);
+    timeoutId = setTimeout(printNextLine, 100);
     
     return () => {
       isMounted = false;
@@ -172,10 +172,10 @@ export default function Intro3DTransition({ onEnterSite }) {
     if (fakeProgress < 100) {
       interval = setInterval(() => {
         setFakeProgress(p => {
-          const next = p + Math.floor(Math.random() * 10) + 2;
+          const next = p + Math.floor(Math.random() * 15) + 5;
           return next > 100 ? 100 : next;
         });
-      }, 300);
+      }, 50);
     }
     return () => clearInterval(interval);
   }, [fakeProgress]);
