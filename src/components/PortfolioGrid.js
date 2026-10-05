@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { X, ExternalLink, Github } from 'lucide-react';
 import ImageMagnifier from './ImageMagnifier';
+import { optimizeImage } from '../utils/optimizeImage';
 
 import { motion } from 'framer-motion';
 
@@ -44,7 +45,7 @@ export default function PortfolioGrid({ items, isApp = false }) {
             <div className={`w-full overflow-hidden bg-[#111] ${isApp ? 'aspect-video' : 'aspect-[4/5]'}`}>
               {item.imageUrl ? (
                 <img
-                  src={item.imageUrl}
+                  src={optimizeImage(item.imageUrl, 800)}
                   alt={item.title}
                   className="w-full h-full object-cover transition duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100 grayscale-[50%] group-hover:grayscale-0 transform-gpu"
                 />
@@ -81,12 +82,12 @@ export default function PortfolioGrid({ items, isApp = false }) {
             <div className="w-full md:w-3/5 bg-[#0a0a0a] overflow-y-auto max-h-[50vh] md:max-h-[90vh] p-4 md:p-8 border-b md:border-b-0 md:border-r border-[#333] custom-scrollbar space-y-6">
               {selectedItem.imageUrl && (
                 <div className="border border-[#222] p-1 bg-[#111]">
-                  <ImageMagnifier src={selectedItem.imageUrl} alt={selectedItem.title} />
+                  <ImageMagnifier src={optimizeImage(selectedItem.imageUrl, 1600, 80)} alt={selectedItem.title} />
                 </div>
               )}
               {selectedItem.gallery?.map((img, index) => (
                 <div key={index} className="border border-[#222] p-1 bg-[#111]">
-                  <ImageMagnifier src={img} alt={`Gallery ${index}`} />
+                  <ImageMagnifier src={optimizeImage(img, 1600, 80)} alt={`Gallery ${index}`} />
                 </div>
               ))}
             </div>

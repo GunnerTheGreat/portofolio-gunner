@@ -1,3 +1,5 @@
+import { optimizeImage } from '../utils/optimizeImage';
+
 export default function VideoCard({ title, src, thumbnail }) {
   const getYouTubeId = (url) => {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
@@ -27,7 +29,7 @@ export default function VideoCard({ title, src, thumbnail }) {
           <video
             controls
             controlsList="nodownload"
-            poster={thumbnail}
+            poster={optimizeImage(thumbnail, 800)}
             className="w-full h-full object-cover transition-all duration-700 transform-gpu"
             onContextMenu={(e) => e.preventDefault()}
           >

@@ -1,3 +1,5 @@
+import { optimizeImage } from '../utils/optimizeImage';
+
 export default function AudioCard({ title, src, coverArt, type = "file" }) {
 
   const cardClass = 'group relative bg-[#050505] rounded-none overflow-hidden border-2 border-[#222] hover:border-[#ff1a1a] transition-colors duration-300';
@@ -51,7 +53,7 @@ export default function AudioCard({ title, src, coverArt, type = "file" }) {
       
       <div className="relative h-48 w-full bg-[#0a0a0a]">
         <img
-          src={coverArt || "/default-music-cover.jpg"}
+          src={optimizeImage(coverArt, 600) || "/default-music-cover.jpg"}
           alt={title}
           className="w-full h-full object-cover pointer-events-none select-none transition-all duration-700 transform-gpu"
           onContextMenu={(e) => e.preventDefault()}
